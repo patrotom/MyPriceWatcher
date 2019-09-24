@@ -1,9 +1,8 @@
 package edu.utep.cs.cs4330.mypricewatcher;
 
 public class Item {
-    private String url;
-    private Long initialPrice;
-    private Long currentPrice;
+    private String url, name;
+    private Long initialPrice, currentPrice;
     private boolean initialPriceSet;
 
     Item(String url) {
@@ -13,6 +12,10 @@ public class Item {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Long getInitialPrice() {
@@ -32,6 +35,10 @@ public class Item {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setInitialPrice(Long initialPrice) {
