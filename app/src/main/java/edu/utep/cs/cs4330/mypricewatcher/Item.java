@@ -16,6 +16,9 @@ public class Item {
     }
 
     public Long getInitialPrice() {
+        if (!initialPriceSet) {
+            return new Long(0);
+        }
         return initialPrice;
     }
 
