@@ -3,12 +3,37 @@ package edu.utep.cs.cs4330.mypricewatcher;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+    private TextView nameView, initialPriceView, currentPriceView, percentageChangeView;
+    private Button updatePriceButton, openItemWebsiteButton;
+    private PriceFinder priceFinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        nameView = findViewById(R.id.nameView);
+        initialPriceView = findViewById(R.id.initialPriceView);
+        currentPriceView = findViewById(R.id.currentPriceView);
+        percentageChangeView = findViewById(R.id.percentageChangeView);
+        updatePriceButton = findViewById(R.id.updatePriceButton);
+        openItemWebsiteButton = findViewById(R.id.openItemWebsiteButton);
+
+        priceFinder = new PriceFinder(new SimulatedBehavior(), new Item("Dummy Item", "dummy.com"));
+
+        nameView.setText(priceFinder.getInitialItemName());
+    }
+
+    public void updatePriceClicked(View view) {
+
+    }
+
+    public void openItemWebsiteClicked(View view) {
+
     }
 }

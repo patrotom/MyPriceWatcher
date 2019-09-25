@@ -7,10 +7,11 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/openWebsiteButton"
+        android:id="@+id/openItemWebsiteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="44dp"
+        android:onClick="openItemWebsiteClicked"
         android:text="Open Item Website"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,9 +24,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
         android:layout_marginEnd="39dp"
+        android:onClick="updatePriceClicked"
         android:text="Update Price"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/openWebsiteButton"
+        app:layout_constraintEnd_toStartOf="@+id/openItemWebsiteButton"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -104,7 +106,7 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/percentageChangeLabel"
-        app:layout_constraintStart_toStartOf="@+id/openWebsiteButton"
+        app:layout_constraintStart_toStartOf="@+id/openItemWebsiteButton"
         app:layout_constraintTop_toTopOf="@+id/percentageChangeLabel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

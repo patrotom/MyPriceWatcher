@@ -5,8 +5,9 @@ public class Item {
     private Long initialPrice, currentPrice;
     private boolean initialPriceSet;
 
-    Item(String url) {
+    Item(String name, String url) {
         this.url = url;
+        this.name = name;
         initialPriceSet = false;
     }
 
