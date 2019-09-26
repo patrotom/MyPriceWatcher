@@ -2,6 +2,8 @@ package edu.utep.cs.cs4330.mypricewatcher;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         updatePriceButton = findViewById(R.id.updatePriceButton);
         openItemWebsiteButton = findViewById(R.id.openItemWebsiteButton);
 
-        priceFinder = new PriceFinder(new SimulatedBehavior(), new Item("Dummy Item", "dummy.com"));
+        priceFinder = new PriceFinder(new SimulatedBehavior(), new Item("Dummy Item", "https://www.utep.edu/"));
 
         nameView.setText(priceFinder.getInitialItemName());
         initialPriceView.setText(String.valueOf(priceFinder.getInitialItemInitialPrice()));
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openItemWebsiteClicked(View view) {
-
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(priceFinder.getInitialItemUrl()));
+        startActivity(browserIntent);
     }
 }
