@@ -27,10 +27,22 @@ public class MainActivity extends AppCompatActivity {
         priceFinder = new PriceFinder(new SimulatedBehavior(), new Item("Dummy Item", "dummy.com"));
 
         nameView.setText(priceFinder.getInitialItemName());
+        initialPriceView.setText(String.valueOf(priceFinder.getInitialItemInitialPrice()));
+
+        currentPriceView.setText("-");
+        percentageChangeView.setText("-");
     }
 
     public void updatePriceClicked(View view) {
+        currentPriceView.setText(String.valueOf(priceFinder.getInitialItemCurrentPrice()));
+        initialPriceView.setText(String.valueOf(priceFinder.getInitialItemInitialPrice()));
 
+        Double percentageChange = priceFinder.countPercentageChange();
+
+        if (percentageChange > 0.0)
+            percentageChangeView.setText(String.format("+" + "%.2f", percentageChange) + "%");
+        else
+            percentageChangeView.setText(String.format("%.2f", percentageChange) + "%");
     }
 
     public void openItemWebsiteClicked(View view) {

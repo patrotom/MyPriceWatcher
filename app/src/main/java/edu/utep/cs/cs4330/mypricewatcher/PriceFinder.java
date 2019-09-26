@@ -10,6 +10,10 @@ public class PriceFinder {
         this.initialItem.setCurrentPrice(this.strategy.findPrice(this.initialItem));
     }
 
+    public Double countPercentageChange() {
+        return ((double)(initialItem.getCurrentPrice() - initialItem.getInitialPrice()) / (double)initialItem.getInitialPrice()) * 100;
+    }
+
     public String getInitialItemUrl() {
         return initialItem.getUrl();
     }
@@ -18,12 +22,12 @@ public class PriceFinder {
         return initialItem.getName();
     }
 
-    public Long getCurrentPrice() {
-        this.initialItem.setCurrentPrice(strategy.findPrice(initialItem));
+    public Long getInitialItemCurrentPrice() {
+        initialItem.setCurrentPrice(strategy.findPrice(initialItem));
         return initialItem.getCurrentPrice();
     }
 
-    public Long getInitialPrice() {
+    public Long getInitialItemInitialPrice() {
         return initialItem.getInitialPrice();
     }
 
