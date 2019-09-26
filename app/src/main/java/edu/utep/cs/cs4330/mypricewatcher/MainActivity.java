@@ -26,7 +26,16 @@ public class MainActivity extends AppCompatActivity {
         updatePriceButton = findViewById(R.id.updatePriceButton);
         openItemWebsiteButton = findViewById(R.id.openItemWebsiteButton);
 
-        priceFinder = new PriceFinder(new SimulatedBehavior(), new Item("Dummy Item", "https://www.utep.edu/"));
+        String action = getIntent().getAction();
+        String type = getIntent().getType();
+        String url;
+
+        if (Intent.ACTION_SEND.equalsIgnoreCase(action) && type != null && "text/plain".equals(type))
+            url = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+        else
+            url = "https://www.utep.edu/";
+
+        priceFinder = new PriceFinder(new SimulatedBehavior(), new Item("Dummy Item", url));
 
         nameView.setText(priceFinder.getInitialItemName());
         initialPriceView.setText(String.valueOf(priceFinder.getInitialItemInitialPrice()));
