@@ -14,6 +14,9 @@ import android.widget.TextView;
  * to user after they run the application.
  *
  * @author Tomas Patro
+ * @version 0.1
+ * @see PriceFinder
+ * @see SimulatedBehavior
  */
 public class MainActivity extends AppCompatActivity {
     private TextView nameView, initialPriceView, currentPriceView, percentageChangeView;
@@ -22,9 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method which is called when the activity is created. It is used to initialize graphic
-     * components of the application along to private attributes of the class. It is also used to
-     * initialize URL of the initial item which can be derived from the external source using the
-     * {@link Intent} class. Otherwise, default value is being used which is
+     * components of the application alongside the private attributes of the class. It is also used
+     * to initialize URL of the initial item which can be derived from the external source using the
+     * {@link Intent} class. Otherwise, the default value is being used which is
      * <a href="https://www.utep.edu/">UTEP's main website</a>.
      *
      * @param savedInstanceState an attribute representing the saved state of the current instance
@@ -66,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
      * Handler for the click event on the {@code updatePriceButton} button. It sets the text of the
      * {@code currentPriceView} to the value of current price of the initial item and text of the
      * {@code initialPriceView} to the value of initial price of the initial item. It also updates
-     * the percentage change between the initial and current price.
+     * the percentage change between the initial and current price and set this value to the
+     * {@code percentageChangeView} view.
      *
      * @param view current view where the {@code updatePriceButton} is located in
      */

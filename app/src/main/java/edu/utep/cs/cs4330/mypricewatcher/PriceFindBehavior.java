@@ -6,6 +6,9 @@ package edu.utep.cs.cs4330.mypricewatcher;
  * product.
  *
  * @author Tomas Patro
+ * @version 0.1
+ * @see SimulatedBehavior
+ * @see ScraperBehavior
  */
 public interface PriceFindBehavior {
     /**

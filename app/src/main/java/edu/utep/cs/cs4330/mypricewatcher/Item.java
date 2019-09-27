@@ -4,6 +4,7 @@ package edu.utep.cs.cs4330.mypricewatcher;
  * Represents the item which is the direct representation of the product with its price.
  *
  * @author Tomas Patro
+ * @version 0.1
  */
 public class Item {
     private String url, name;
