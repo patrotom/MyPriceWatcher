@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -57,19 +58,6 @@ public class MainActivity extends AppCompatActivity {
         itemListView.setOnItemClickListener(this::itemClicked);
 
         checkForExternalUrlSource();
-    }
-
-    private void itemClicked(AdapterView<?> parent, final View view, int position, long id) {
-        Item item = (Item) parent.getItemAtPosition(position);
-
-        if (item != null) {
-            Intent intent = new Intent(this, ItemEditActivity.class);
-            intent.putExtra("name", item.getName());
-            intent.putExtra("url", item.getUrl());
-            intent.putExtra("isNewItem", false);
-
-            startActivityForResult(intent, 1);
-        }
     }
 
     @Override
@@ -124,27 +112,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo ) {
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
         getMenuInflater().inflate(R.menu.menu_context, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)
+                item.getMenuInfo();
+        Item i = itemsListAdapter.getItem(info.position);
         switch (item.getItemId()) {
             case R.id.action_delete:
-                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)
-                        item.getMenuInfo();
-
-                AlertDialog diaBox = AskOption(itemsListAdapter.getItem(info.position));
+                AlertDialog diaBox = AskOption(i);
                 diaBox.show();
-
+                return true;
+            case R.id.action_open_browser:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(i.getUrl()));
+                startActivity(browserIntent);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
-    public void checkForExternalUrlSource() {
+    private void itemClicked(AdapterView<?> parent, final View view, int position, long id) {
+        Item item = (Item) parent.getItemAtPosition(position);
+
+        if (item != null) {
+            Intent intent = new Intent(this, ItemEditActivity.class);
+            intent.putExtra("name", item.getName());
+            intent.putExtra("url", item.getUrl());
+            intent.putExtra("isNewItem", false);
+
+            startActivityForResult(intent, 1);
+        }
+    }
+
+    private void checkForExternalUrlSource() {
         String action = getIntent().getAction();
         String type = getIntent().getType();
 

@@ -9,4 +9,10 @@
         android:title="Delete"
         app:showAsAction="withText"
         android:orderInCategory="100" />
+    <item
+        android:id="@+id/action_open_browser"
+        android:icon="@drawable/open_browser_icon"
+        android:title="Browse"
+        app:showAsAction="withText"
+        android:orderInCategory="200" />
 </menu>
