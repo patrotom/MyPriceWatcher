@@ -42,14 +42,6 @@ public class PriceFinder {
         return true;
     }
 
-    public List<String> names() {
-        List<String> names = new ArrayList<>(items.size());
-        for (Item i: items) {
-            names.add(i.getName());
-        }
-        return names;
-    }
-
     public void updateData() {
         for (Item item: items)
             item.setCurrentPrice(priceFindBehavior.findPrice(item));

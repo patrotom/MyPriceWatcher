@@ -1,9 +1,7 @@
 package edu.utep.cs.cs4330.mypricewatcher;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -68,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 itemsListAdapter.notifyDataSetChanged();
                 return true;
             case R.id.action_add_item:
-                Intent intent = new Intent(this, ItemEditActivity.class);
+                Intent intent = new Intent(this, ItemFormActivity.class);
                 intent.putExtra("isNewItem", true);
                 startActivityForResult(intent, 2);
             default:
@@ -140,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         Item item = (Item) parent.getItemAtPosition(position);
 
         if (item != null) {
-            Intent intent = new Intent(this, ItemEditActivity.class);
+            Intent intent = new Intent(this, ItemFormActivity.class);
             intent.putExtra("name", item.getName());
             intent.putExtra("url", item.getUrl());
             intent.putExtra("isNewItem", false);
@@ -156,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
         if (Intent.ACTION_SEND.equalsIgnoreCase(action) && type != null &&
                 "text/plain".equals(type)) {
             String url = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-            Intent intent = new Intent(this, ItemEditActivity.class);
+            Intent intent = new Intent(this, ItemFormActivity.class);
             intent.putExtra("isNewItem", true);
             intent.putExtra("url", url);
             startActivityForResult(intent, 2);

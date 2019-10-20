@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ItemEditActivity">
+    tools:context=".ItemFormActivity">
 
     <TextView
         android:id="@+id/editItemHeading"
@@ -58,14 +58,14 @@
         android:textStyle="italic" />
 
     <Button
-        android:id="@+id/submitEditButton"
+        android:id="@+id/submitButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="100dp"
         android:layout_marginTop="25dp"
         android:layout_marginRight="100dp"
         android:backgroundTint="@color/mpwPrimary"
-        android:onClick="submitEditClicked"
+        android:onClick="submitClicked"
         android:text="Submit"
         android:textColor="#FFFFFF" />
 
