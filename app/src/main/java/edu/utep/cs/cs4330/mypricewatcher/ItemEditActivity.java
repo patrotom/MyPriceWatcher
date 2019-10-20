@@ -33,10 +33,14 @@ public class ItemEditActivity extends AppCompatActivity {
 
         isNewItem = intent.getBooleanExtra("isNewItem", true);
 
+        String url = intent.getStringExtra("url");
+
+        if (url != null)
+            urlEditText.setText(intent.getStringExtra("url"));
+
         if (!isNewItem) {
             oldName = intent.getStringExtra("name");
             nameEditText.setText(oldName);
-            urlEditText.setText(intent.getStringExtra("url"));
         }
         else {
             ediItemHeading.setText("Add Item");

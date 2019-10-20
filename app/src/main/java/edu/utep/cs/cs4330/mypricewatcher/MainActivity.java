@@ -45,9 +45,6 @@ public class MainActivity extends AppCompatActivity {
 
         priceFinder = new PriceFinder(new SimulatedBehavior());
 
-        priceFinder.addItem(new Item("Hello World", "habbababba"));
-        priceFinder.addItem(new Item("Hello Werld", "habbababba"));
-
         itemsListAdapter = new ItemsListAdapter(this,
                 priceFinder.getItems());
 
@@ -56,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         registerForContextMenu(itemListView);
         itemListView.setOnItemClickListener(this::itemClicked);
+
+        checkForExternalUrlSource();
     }
 
     private void itemClicked(AdapterView<?> parent, final View view, int position, long id) {
@@ -143,4 +142,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void checkForExternalUrlSource() {
+        String action = getIntent().getAction();
+        String type = getIntent().getType();
+
+        if (Intent.ACTION_SEND.equalsIgnoreCase(action) && type != null &&
+                "text/plain".equals(type)) {
+            String url = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+            Intent intent = new Intent(this, ItemEditActivity.class);
+            intent.putExtra("isNewItem", true);
+            intent.putExtra("url", url);
+            startActivityForResult(intent, 2);
+        }
+    }
 }
