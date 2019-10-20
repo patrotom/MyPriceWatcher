@@ -1,5 +1,7 @@
 package edu.utep.cs.cs4330.mypricewatcher;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,8 +60,17 @@ public class PriceFinder {
 
     public Item getItemByName(String name) {
         for (Item i: items)
-            if (i.getName() == name)
+            if (i.getName().equals(name))
                 return i;
         return null;
+    }
+
+    public boolean renameItem(Item item, String newName) {
+        if (getItemByName(newName) != null || item == null)
+            return false;
+
+        item.setName(newName);
+
+        return true;
     }
 }

@@ -3,10 +3,12 @@ package edu.utep.cs.cs4330.mypricewatcher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,16 +70,13 @@ public class MainActivity extends AppCompatActivity {
     private void itemClicked(AdapterView<?> parent, final View view, int position, long id) {
         Item item = (Item) parent.getItemAtPosition(position);
 
-//        if (item != null) {
-//            Intent intent = new Intent(this, ItemEditActivity.class);
-//            intent.putExtra("name", item.getName());
-//            intent.putExtra("url", item.getUrl());
-//            intent.putExtra("initialPrice", item.getInitialPrice());
-//            intent.putExtra("currentPrice", item.getCurrentPrice());
-//            intent.putExtra("percentageChange", item.getPercentageChange());
-//
-//            startActivity(intent);
-//        }
+        if (item != null) {
+            Intent intent = new Intent(this, ItemEditActivity.class);
+            intent.putExtra("name", item.getName());
+            intent.putExtra("url", item.getUrl());
+
+            startActivityForResult(intent, 1);
+        }
     }
 
     @Override
@@ -91,6 +90,25 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
 
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == Activity.RESULT_OK){
+                String oldName = data.getStringExtra("oldName");
+                String newName = data.getStringExtra("name");
+                String url = data.getStringExtra("url");
+
+                Item item = priceFinder.getItemByName(oldName);
+
+                if (priceFinder.renameItem(item, newName)) {
+                    item.setUrl(url);
+                    itemsListAdapter.notifyDataSetChanged();
+                }
+            }
         }
     }
 
