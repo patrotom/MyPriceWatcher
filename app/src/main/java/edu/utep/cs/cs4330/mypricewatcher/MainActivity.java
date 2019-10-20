@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param savedInstanceState an attribute representing the saved state of the current instance
      *                           of the activity
-     * @see Intent
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -4,7 +4,7 @@ package edu.utep.cs.cs4330.mypricewatcher;
  * Represents the item which is the direct representation of the product with its price.
  *
  * @author Tomas Patro
- * @version 0.1
+ * @version 0.2
  */
 public class Item {
     private String url, name;
@@ -23,16 +23,11 @@ public class Item {
         this.currentPrice = new Double(0);
     }
 
-    public boolean equals(Object obj){
-        if (obj instanceof Item) {
-            Item item = (Item) obj;
-            return (item.name == this.name);
-        }
-        else {
-            return false;
-        }
-    }
-
+    /**
+     * Counts percentage change between initial and current price.
+     *
+     * @return percentage change between initial and current price
+     */
     public Double getPercentageChange() {
         return ((currentPrice - initialPrice) / initialPrice) * 100;
     }
@@ -109,12 +104,4 @@ public class Item {
     public void setCurrentPrice(Double currentPrice) {
         this.currentPrice = currentPrice;
     }
-
-    /**
-     * Standard setter method which sets the value of the indicator whether the initial price
-     * of the item/product has been already set or not.
-     *
-     * @param initialPriceSet new value of the indicator whether the initial price of the
-     *                        item/product has been already set
-     */
 }

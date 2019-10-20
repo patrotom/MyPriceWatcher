@@ -5,7 +5,7 @@ package edu.utep.cs.cs4330.mypricewatcher;
  * this strategy is not implemented yet.
  *
  * @author Tomas Patro
- * @version 0.1
+ * @version 0.2
  * @see PriceFindBehavior
  * @see SimulatedBehavior
  */
