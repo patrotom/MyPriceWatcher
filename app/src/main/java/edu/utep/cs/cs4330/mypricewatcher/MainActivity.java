@@ -8,10 +8,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,12 +50,29 @@ public class MainActivity extends AppCompatActivity {
 
         priceFinder = new PriceFinder(new SimulatedBehavior());
 
-        ItemListFragment fragment = (ItemListFragment)
-                getSupportFragmentManager().findFragmentById(R.id.itemListFragment);
-        fragment.setListener(this::itemClicked);
+        priceFinder.addItem(new Item("Hello World", "habbababba"));
+
+        ItemsListAdapter itemsListAdapter = new ItemsListAdapter(this,
+                priceFinder.getItems());
+
+        ListView itemListView = findViewById(R.id.itemListView);
+        itemListView.setAdapter(itemsListAdapter);
+
+        itemListView.setOnItemClickListener(this::itemClicked);
     }
 
-    private void itemClicked(String name) {
+    private void itemClicked(AdapterView<?> parent, final View view, int position, long id) {
+        Item item = (Item) parent.getItemAtPosition(position);
 
+        if (item != null) {
+            Intent intent = new Intent(this, ItemDetailActivity.class);
+            intent.putExtra("name", item.getName());
+            intent.putExtra("url", item.getUrl());
+            intent.putExtra("initialPrice", item.getInitialPrice());
+            intent.putExtra("currentPrice", item.getCurrentPrice());
+            intent.putExtra("percentageChange", item.getPercentageChange());
+
+            startActivity(intent);
+        }
     }
 }

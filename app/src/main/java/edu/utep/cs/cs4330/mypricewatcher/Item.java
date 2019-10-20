@@ -9,7 +9,6 @@ package edu.utep.cs.cs4330.mypricewatcher;
 public class Item {
     private String url, name;
     private Long initialPrice, currentPrice;
-    private boolean initialPriceSet;
 
     /**
      * Class constructor.
@@ -20,7 +19,22 @@ public class Item {
     Item(String name, String url) {
         this.url = url;
         this.name = name;
-        initialPriceSet = false;
+        this.initialPrice = new Long(0);
+        this.currentPrice = new Long(0);
+    }
+
+    public boolean equals(Object obj){
+        if (obj instanceof Item) {
+            Item item = (Item) obj;
+            return (item.name == this.name);
+        }
+        else {
+            return false;
+        }
+    }
+
+    public Double getPercentageChange() {
+        return (double)((currentPrice - initialPrice) / initialPrice) * 100;
     }
 
     /**
@@ -48,9 +62,6 @@ public class Item {
      * @return initial price of the item/product
      */
     public Long getInitialPrice() {
-        if (!initialPriceSet) {
-            return new Long(0);
-        }
         return initialPrice;
     }
 
@@ -61,15 +72,6 @@ public class Item {
      */
     public Long getCurrentPrice() {
         return currentPrice;
-    }
-
-    /**
-     * Returns the {@code boolean} indicator whether the initial price has been already set or not.
-     *
-     * @return indicator whether the initial price has been already set
-     */
-    public boolean getInitialPriceSet() {
-        return initialPriceSet;
     }
 
     /**
@@ -115,7 +117,4 @@ public class Item {
      * @param initialPriceSet new value of the indicator whether the initial price of the
      *                        item/product has been already set
      */
-    public void setInitialPriceSet(boolean initialPriceSet) {
-        this.initialPriceSet = initialPriceSet;
-    }
 }

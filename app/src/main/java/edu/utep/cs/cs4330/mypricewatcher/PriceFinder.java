@@ -15,16 +15,16 @@ import java.util.List;
  * @see ScraperBehavior
  */
 public class PriceFinder {
-    private static ArrayList<Item> items;
-    private PriceFindBehavior strategy;
+    private ArrayList<Item> items;
+    private PriceFindBehavior priceFindBehavior;
 
     /**
      * Class constructor.
      *
-     * @param strategy strategy which is used to calculate the price
+     * @param priceFindBehavior strategy which is used to calculate the price
      */
-    PriceFinder(PriceFindBehavior strategy) {
-        this.strategy = strategy;
+    PriceFinder(PriceFindBehavior priceFindBehavior) {
+        this.priceFindBehavior = priceFindBehavior;
         items = new ArrayList<>();
     }
 
@@ -39,14 +39,32 @@ public class PriceFinder {
     }
 
     public void addItem(Item item) {
+        if (getItemByName(item.getName()) != null)
+            return;
+
+        Long price = priceFindBehavior.findPrice(item);
+        item.setInitialPrice(price);
+        item.setCurrentPrice(price);
+
         items.add(item);
     }
 
-    public static List<String> names() {
+    public List<String> names() {
         List<String> names = new ArrayList<>(items.size());
         for (Item i: items) {
             names.add(i.getName());
         }
         return names;
+    }
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    public Item getItemByName(String name) {
+        for (Item i: items)
+            if (i.getName() == name)
+                return i;
+        return null;
     }
 }
