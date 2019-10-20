@@ -5,6 +5,8 @@ import androidx.appcompat.view.menu.MenuBuilder;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -133,8 +135,8 @@ public class MainActivity extends AppCompatActivity {
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)
                         item.getMenuInfo();
 
-                if (priceFinder.removeItem(itemsListAdapter.getItem(info.position)))
-                    itemsListAdapter.notifyDataSetChanged();
+                AlertDialog diaBox = AskOption(itemsListAdapter.getItem(info.position));
+                diaBox.show();
 
                 return true;
             default:
@@ -154,5 +156,22 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("url", url);
             startActivityForResult(intent, 2);
         }
+    }
+
+    private AlertDialog AskOption(Item item) {
+        AlertDialog deleteDialogBox = new AlertDialog.Builder(this)
+                .setTitle("Delete")
+                .setMessage("Are you sure you want to delete this item?")
+                .setIcon(R.drawable.delete_icon)
+                .setPositiveButton("Delete", (DialogInterface dialog, int whichButton) -> {
+                    if (priceFinder.removeItem(item))
+                        itemsListAdapter.notifyDataSetChanged();
+                    dialog.dismiss();
+                })
+                .setNegativeButton("Cancel", (DialogInterface dialog, int which) ->
+                        dialog.dismiss())
+                .create();
+
+        return deleteDialogBox;
     }
 }
