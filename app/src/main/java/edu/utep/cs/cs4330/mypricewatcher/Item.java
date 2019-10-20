@@ -4,12 +4,11 @@ package edu.utep.cs.cs4330.mypricewatcher;
  * Represents the item which is the direct representation of the product with its price.
  *
  * @author Tomas Patro
- * @version 0.1
+ * @version 0.2
  */
 public class Item {
     private String url, name;
-    private Long initialPrice, currentPrice;
-    private boolean initialPriceSet;
+    private Double initialPrice, currentPrice;
 
     /**
      * Class constructor.
@@ -20,7 +19,17 @@ public class Item {
     Item(String name, String url) {
         this.url = url;
         this.name = name;
-        initialPriceSet = false;
+        this.initialPrice = new Double(0);
+        this.currentPrice = new Double(0);
+    }
+
+    /**
+     * Counts percentage change between initial and current price.
+     *
+     * @return percentage change between initial and current price
+     */
+    public Double getPercentageChange() {
+        return ((currentPrice - initialPrice) / initialPrice) * 100;
     }
 
     /**
@@ -47,10 +56,7 @@ public class Item {
      *
      * @return initial price of the item/product
      */
-    public Long getInitialPrice() {
-        if (!initialPriceSet) {
-            return new Long(0);
-        }
+    public Double getInitialPrice() {
         return initialPrice;
     }
 
@@ -59,17 +65,8 @@ public class Item {
      *
      * @return current price of the item/product
      */
-    public Long getCurrentPrice() {
+    public Double getCurrentPrice() {
         return currentPrice;
-    }
-
-    /**
-     * Returns the {@code boolean} indicator whether the initial price has been already set or not.
-     *
-     * @return indicator whether the initial price has been already set
-     */
-    public boolean getInitialPriceSet() {
-        return initialPriceSet;
     }
 
     /**
@@ -95,7 +92,7 @@ public class Item {
      *
      * @param initialPrice new value of the initial price to be set
      */
-    public void setInitialPrice(Long initialPrice) {
+    public void setInitialPrice(Double initialPrice) {
         this.initialPrice = initialPrice;
     }
 
@@ -104,18 +101,7 @@ public class Item {
      *
      * @param currentPrice new value of the current price to be set
      */
-    public void setCurrentPrice(Long currentPrice) {
+    public void setCurrentPrice(Double currentPrice) {
         this.currentPrice = currentPrice;
-    }
-
-    /**
-     * Standard setter method which sets the value of the indicator whether the initial price
-     * of the item/product has been already set or not.
-     *
-     * @param initialPriceSet new value of the indicator whether the initial price of the
-     *                        item/product has been already set
-     */
-    public void setInitialPriceSet(boolean initialPriceSet) {
-        this.initialPriceSet = initialPriceSet;
     }
 }

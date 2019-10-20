@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        app:cardBackgroundColor="#E0E0E0"
+        app:cardCornerRadius="15dp">
+
+        <TextView
+            android:id="@+id/itemNameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Name of Item"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/itemPriceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="Price:" />
+
+                <TextView
+                    android:id="@+id/itemPriceChangeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:text="Change:" />
+
+                <TextView
+                    android:id="@+id/itemInitialInfoLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:text="Added:" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/itemPriceView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="-" />
+
+                <TextView
+                    android:id="@+id/itemPriceChangeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:text="-" />
+
+                <TextView
+                    android:id="@+id/itemInitialInfoView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:layout_weight="1"
+                    android:text="-" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

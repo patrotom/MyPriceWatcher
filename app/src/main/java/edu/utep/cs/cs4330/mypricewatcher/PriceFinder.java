@@ -1,88 +1,103 @@
 package edu.utep.cs.cs4330.mypricewatcher;
 
+import java.util.ArrayList;
+
 /**
- * Represents the handler for the items/products. In the current version, this class only handles
- * the initial item. It uses different strategies from the strategy pattern to get the price of the
- * item/product.
+ * Represents the handler for the items/products. It uses different strategies from the strategy
+ * pattern to get the price of the item/product.
  *
  * @author Tomas Patro
- * @version 0.1
+ * @version 0.2
  * @see PriceFindBehavior
  * @see SimulatedBehavior
  * @see ScraperBehavior
  */
 public class PriceFinder {
-    private Item initialItem;
-    private PriceFindBehavior strategy;
+    private ArrayList<Item> items;
+    private PriceFindBehavior priceFindBehavior;
 
     /**
      * Class constructor.
      *
-     * @param strategy strategy which is used to calculate the price
-     * @param initialItem initial item used to get its initial price, current price and percentage
-     *                    change
+     * @param priceFindBehavior strategy which is used to calculate the price
      */
-    PriceFinder(PriceFindBehavior strategy, Item initialItem) {
-        this.strategy = strategy;
-        this.initialItem = initialItem;
-        this.initialItem.setCurrentPrice(this.strategy.findPrice(this.initialItem));
+    PriceFinder(PriceFindBehavior priceFindBehavior) {
+        this.priceFindBehavior = priceFindBehavior;
+        items = new ArrayList<>();
     }
 
     /**
-     * Counts the percentage change between the initial and current price of the initial item.
+     * Adds new item to the list. If the item with the same name already exists, returns false.
      *
-     * @return percentage change between the initial and current price of the initial item
+     * @param item new item to be added to the list
+     * @return
      */
-    public Double countPercentageChange() {
-        return ((double)(initialItem.getCurrentPrice() - initialItem.getInitialPrice()) /
-                (double)initialItem.getInitialPrice()) * 100;
+    public boolean addItem(Item item) {
+        if (getItemByName(item.getName()) != null)
+            return false;
+
+        Double price = priceFindBehavior.findPrice(item);
+        item.setInitialPrice(price);
+        item.setCurrentPrice(price);
+
+        items.add(item);
+        return true;
     }
 
     /**
-     * Standard getter method which returns the URL of the initial item.
-     *
-     * @return URL of the initial item
+     * Updates current prices of all items in the list.
      */
-    public String getInitialItemUrl() {
-        return initialItem.getUrl();
+    public void updateData() {
+        for (Item item: items)
+            item.setCurrentPrice(priceFindBehavior.findPrice(item));
     }
 
     /**
-     * Standard getter method which returns the name of the initial item.
+     * Returns the list containing all the items.
      *
-     * @return name of the initial item
+     * @return list of items
      */
-    public String getInitialItemName() {
-        return initialItem.getName();
+    public ArrayList<Item> getItems() {
+        return items;
     }
 
     /**
-     * Standard getter method which returns the current price of the initial item. Before returning
-     * the current price, it checks whether there is a change in the current price and sets the
-     * new value.
+     * Returns item with the specified name. If the item cannot be found returns, {@code null}.
      *
-     * @return current price of the initial item
+     * @param name name of the item we look for
+     * @return item with the specified name or null
      */
-    public Long getInitialItemCurrentPrice() {
-        initialItem.setCurrentPrice(strategy.findPrice(initialItem));
-        return initialItem.getCurrentPrice();
+    public Item getItemByName(String name) {
+        for (Item i: items)
+            if (i.getName().equals(name))
+                return i;
+        return null;
     }
 
     /**
-     * Standard getter method which returns the initial price of the initial item.
+     * Removes given item from the list. If the item cannot be found, returns false.
      *
-     * @return initial price of the initial item
+     * @param item item to be removed
+     * @return indicator of the success/failure of the remove operation
      */
-    public Long getInitialItemInitialPrice() {
-        return initialItem.getInitialPrice();
+    public boolean removeItem(Item item) {
+        return items.remove(item);
     }
 
     /**
-     * Standard setter method which sets a new strategy for calculating the price of the item.
+     * Replaces the name of the given item with the given string. If an item with the given name
+     * already exists, returns false.
      *
-     * @param strategy designated strategy to be used to calculate a price of the item
+     * @param item item to be renamed
+     * @param newName new name for the item
+     * @return indicator of the success/failure of the rename operation
      */
-    public void setStarategy(PriceFindBehavior strategy) {
-        this.strategy = strategy;
+    public boolean renameItem(Item item, String newName) {
+        if (getItemByName(newName) != null || item == null)
+            return false;
+
+        item.setName(newName);
+
+        return true;
     }
 }

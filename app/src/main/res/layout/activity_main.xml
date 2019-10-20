@@ -1,112 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/openItemWebsiteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
-        android:onClick="openItemWebsiteClicked"
-        android:text="Open Item Website"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.816" />
-
-    <Button
-        android:id="@+id/updatePriceButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginEnd="39dp"
-        android:onClick="updatePriceClicked"
-        android:text="Update Price"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/openItemWebsiteButton"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.816" />
-
-    <TextView
-        android:id="@+id/nameLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="78dp"
-        android:text="Name:"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/initialPriceLabel"
-        app:layout_constraintEnd_toEndOf="@+id/initialPriceLabel" />
-
-    <TextView
-        android:id="@+id/initialPriceLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="79dp"
-        android:text="Initial Price:"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/currentPricelabel"
-        app:layout_constraintEnd_toEndOf="@+id/currentPricelabel" />
-
-    <TextView
-        android:id="@+id/currentPricelabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="79dp"
-        android:text="Current Price:"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/percentageChangeLabel"
-        app:layout_constraintEnd_toEndOf="@+id/percentageChangeLabel" />
-
-    <TextView
-        android:id="@+id/percentageChangeLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="79dp"
-        android:text="Percentage Change:"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/updatePriceButton"
-        app:layout_constraintEnd_toEndOf="@+id/updatePriceButton" />
-
-    <TextView
-        android:id="@+id/nameView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/nameLabel"
-        app:layout_constraintStart_toStartOf="@+id/initialPriceView"
-        app:layout_constraintTop_toTopOf="@+id/nameLabel" />
-
-    <TextView
-        android:id="@+id/initialPriceView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/initialPriceLabel"
-        app:layout_constraintStart_toStartOf="@+id/currentPriceView"
-        app:layout_constraintTop_toTopOf="@+id/initialPriceLabel" />
-
-    <TextView
-        android:id="@+id/currentPriceView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/currentPricelabel"
-        app:layout_constraintStart_toStartOf="@+id/percentageChangeView"
-        app:layout_constraintTop_toTopOf="@+id/currentPricelabel" />
-
-    <TextView
-        android:id="@+id/percentageChangeView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/percentageChangeLabel"
-        app:layout_constraintStart_toStartOf="@+id/openItemWebsiteButton"
-        app:layout_constraintTop_toTopOf="@+id/percentageChangeLabel" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ListView
+        android:id="@+id/itemListView"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

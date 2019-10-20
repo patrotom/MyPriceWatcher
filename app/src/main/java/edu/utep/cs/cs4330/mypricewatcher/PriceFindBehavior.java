@@ -6,7 +6,7 @@ package edu.utep.cs.cs4330.mypricewatcher;
  * product.
  *
  * @author Tomas Patro
- * @version 0.1
+ * @version 0.2
  * @see SimulatedBehavior
  * @see ScraperBehavior
  */
@@ -19,5 +19,5 @@ public interface PriceFindBehavior {
      * @return current price of the product
      * @see Item
      */
-    Long findPrice(Item item);
+    Double findPrice(Item item);
 }

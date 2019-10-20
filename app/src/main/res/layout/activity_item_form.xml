@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ItemFormActivity">
+
+    <TextView
+        android:id="@+id/editItemHeading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Edit Item"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/editItemNameLabel"
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name:"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:id="@+id/editItemUrlLabel"
+        android:layout_marginTop="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="URL:"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/urlEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:textStyle="italic" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="100dp"
+        android:backgroundTint="@color/mpwPrimary"
+        android:onClick="submitClicked"
+        android:text="Submit"
+        android:textColor="#FFFFFF" />
+
+</LinearLayout>

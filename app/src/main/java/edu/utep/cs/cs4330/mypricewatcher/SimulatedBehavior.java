@@ -7,7 +7,7 @@ import java.util.Random;
  * {@code Random.nextGaussian} method.
  *
  * @author Tomas Patro
- * @version 0.1
+ * @version 0.2
  * @see PriceFindBehavior
  * @see ScraperBehavior
  * @see Random
@@ -17,18 +17,13 @@ public class SimulatedBehavior implements PriceFindBehavior {
      * Simulates the finding of the price of the item by generating normally-distributed values.
      *
      * @param item represents the item for which we want to find the current price
-     * @return
+     * @return current simulated price of the item
      * @see Item
      */
     @Override
-    public Long findPrice(Item item) {
+    public Double findPrice(Item item) {
         Random r = new Random();
-        Long val = (long) Math.floor(r.nextGaussian() * 100 + 500);
-
-        if (!item.getInitialPriceSet()) {
-            item.setInitialPrice(val);
-            item.setInitialPriceSet(true);
-        }
+        Double val = Math.floor(r.nextGaussian() * 100 + 500);
 
         return val;
     }
