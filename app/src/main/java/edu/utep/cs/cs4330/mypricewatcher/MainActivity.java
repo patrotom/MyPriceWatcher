@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         priceFinder = new PriceFinder(new SimulatedBehavior());
 
         priceFinder.addItem(new Item("Hello World", "habbababba"));
+        priceFinder.addItem(new Item("Hello Werld", "habbababba"));
 
         ItemsListAdapter itemsListAdapter = new ItemsListAdapter(this,
                 priceFinder.getItems());
