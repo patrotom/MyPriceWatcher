@@ -12,8 +12,4 @@
         android:icon="@drawable/add_item_icon"
         android:title="Add Item"
         app:showAsAction="always"/>
-
-    <item android:id="@+id/action_settings"
-        android:title=""
-        app:showAsAction="never"/>
 </menu>

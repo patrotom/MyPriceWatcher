@@ -30,15 +30,16 @@ public class PriceFinder {
         items = new ArrayList<>();
     }
 
-    public void addItem(Item item) {
+    public boolean addItem(Item item) {
         if (getItemByName(item.getName()) != null)
-            return;
+            return false;
 
         Double price = priceFindBehavior.findPrice(item);
         item.setInitialPrice(price);
         item.setCurrentPrice(price);
 
         items.add(item);
+        return true;
     }
 
     public List<String> names() {

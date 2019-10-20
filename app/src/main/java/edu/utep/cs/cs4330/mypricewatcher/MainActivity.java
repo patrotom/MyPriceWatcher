@@ -86,7 +86,9 @@ public class MainActivity extends AppCompatActivity {
                 priceFinder.updateData();
                 itemsListAdapter.notifyDataSetChanged();
                 return true;
-
+            case R.id.action_add_item:
+                Intent intent = new Intent(this, ItemEditActivity.class);
+                startActivityForResult(intent, 2);
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -96,19 +98,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
-                String oldName = data.getStringExtra("oldName");
-                String newName = data.getStringExtra("name");
-                String url = data.getStringExtra("url");
+        switch (requestCode) {
+            case 1:
+                if (resultCode == Activity.RESULT_OK) {
+                    String oldName = data.getStringExtra("oldName");
+                    String newName = data.getStringExtra("name");
+                    String url = data.getStringExtra("url");
 
-                Item item = priceFinder.getItemByName(oldName);
+                    Item item = priceFinder.getItemByName(oldName);
 
-                if (priceFinder.renameItem(item, newName)) {
-                    item.setUrl(url);
-                    itemsListAdapter.notifyDataSetChanged();
+                    if (priceFinder.renameItem(item, newName)) {
+                        item.setUrl(url);
+                        itemsListAdapter.notifyDataSetChanged();
+                    }
                 }
-            }
+                break;
+            case 2:
+                if (resultCode == Activity.RESULT_OK) {
+                    if (priceFinder.addItem(new Item(data.getStringExtra("name"),
+                            data.getStringExtra("url"))))
+                        itemsListAdapter.notifyDataSetChanged();
+                }
+                break;
         }
     }
 
