@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import java.util.ArrayList;
 
 public class ItemsListAdapter extends ArrayAdapter<Item> {
@@ -40,7 +42,8 @@ public class ItemsListAdapter extends ArrayAdapter<Item> {
         else if (items.get(position).getPercentageChange() < 0.0) {
             itemPriceChangeView.setText(String.format("%.2f",
                     items.get(position).getPercentageChange()) + "%");
-            itemPriceChangeView.setTextColor(Color.GREEN);
+            itemPriceChangeView.setTextColor(ContextCompat.getColor(context,
+                    R.color.colorPrimaryDark));
         }
         else
             itemPriceChangeView.setText(String.format("%.2f",

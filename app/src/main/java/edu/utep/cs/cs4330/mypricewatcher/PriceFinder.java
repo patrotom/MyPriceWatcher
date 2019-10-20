@@ -28,16 +28,6 @@ public class PriceFinder {
         items = new ArrayList<>();
     }
 
-    /**
-     * Counts the percentage change between the initial and current price of the initial item.
-     *
-     * @return percentage change between the initial and current price of the initial item
-     */
-    public Double percentageChange(Item item) {
-        return ((double)(item.getCurrentPrice() - item.getInitialPrice()) /
-                (double)item.getInitialPrice()) * 100;
-    }
-
     public void addItem(Item item) {
         if (getItemByName(item.getName()) != null)
             return;
@@ -55,6 +45,11 @@ public class PriceFinder {
             names.add(i.getName());
         }
         return names;
+    }
+
+    public void updateData() {
+        for (Item item: items)
+            item.setCurrentPrice(priceFindBehavior.findPrice(item));
     }
 
     public ArrayList<Item> getItems() {

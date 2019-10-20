@@ -34,7 +34,7 @@ public class Item {
     }
 
     public Double getPercentageChange() {
-        return (double)((currentPrice - initialPrice) / initialPrice) * 100;
+        return ((double)(currentPrice - initialPrice) / (double)initialPrice) * 100;
     }
 
     /**
