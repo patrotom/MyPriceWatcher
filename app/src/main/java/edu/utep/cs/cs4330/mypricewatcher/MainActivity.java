@@ -1,28 +1,18 @@
 package edu.utep.cs.cs4330.mypricewatcher;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.view.menu.MenuBuilder;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.FragmentManager;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Represents the main activity of the application which represents the first and main screen shown
@@ -64,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         ListView itemListView = findViewById(R.id.itemListView);
         itemListView.setAdapter(itemsListAdapter);
 
+        registerForContextMenu(itemListView);
         itemListView.setOnItemClickListener(this::itemClicked);
     }
 
@@ -74,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ItemEditActivity.class);
             intent.putExtra("name", item.getName());
             intent.putExtra("url", item.getUrl());
+            intent.putExtra("isNewItem", false);
 
             startActivityForResult(intent, 1);
         }
@@ -88,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.action_add_item:
                 Intent intent = new Intent(this, ItemEditActivity.class);
+                intent.putExtra("isNewItem", true);
                 startActivityForResult(intent, 2);
             default:
                 return super.onOptionsItemSelected(item);
@@ -123,8 +116,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo ) {
+        getMenuInflater().inflate(R.menu.menu_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)
+                        item.getMenuInfo();
+
+                if (priceFinder.removeItem(itemsListAdapter.getItem(info.position)))
+                    itemsListAdapter.notifyDataSetChanged();
+
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
 }

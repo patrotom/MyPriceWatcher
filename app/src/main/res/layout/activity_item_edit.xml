@@ -26,13 +26,12 @@
 
     <EditText
         android:id="@+id/nameEditText"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
         android:textAlignment="center"
         android:textSize="14sp"
         android:textStyle="italic" />
@@ -48,13 +47,12 @@
 
     <EditText
         android:id="@+id/urlEditText"
-        android:layout_marginLeft="100dp"
-        android:layout_marginRight="100dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="URL"
         android:textAlignment="center"
         android:textSize="14sp"
         android:textStyle="italic" />

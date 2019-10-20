@@ -66,6 +66,10 @@ public class PriceFinder {
         return null;
     }
 
+    public boolean removeItem(Item item) {
+        return items.remove(item);
+    }
+
     public boolean renameItem(Item item, String newName) {
         if (getItemByName(newName) != null || item == null)
             return false;
