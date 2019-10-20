@@ -32,7 +32,7 @@ public class PriceFinder {
         if (getItemByName(item.getName()) != null)
             return;
 
-        Long price = priceFindBehavior.findPrice(item);
+        Double price = priceFindBehavior.findPrice(item);
         item.setInitialPrice(price);
         item.setCurrentPrice(price);
 

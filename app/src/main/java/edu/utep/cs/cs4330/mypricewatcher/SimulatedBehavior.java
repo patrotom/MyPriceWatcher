@@ -21,9 +21,9 @@ public class SimulatedBehavior implements PriceFindBehavior {
      * @see Item
      */
     @Override
-    public Long findPrice(Item item) {
+    public Double findPrice(Item item) {
         Random r = new Random();
-        Long val = (long) Math.floor(r.nextGaussian() * 100 + 500);
+        Double val = Math.floor(r.nextGaussian() * 100 + 500);
 
         return val;
     }

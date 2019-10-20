@@ -18,7 +18,7 @@ public class ScraperBehavior implements PriceFindBehavior {
      * @see Item
      */
     @Override
-    public Long findPrice(Item item) {
+    public Double findPrice(Item item) {
         /* TODO */
         return null;
     }

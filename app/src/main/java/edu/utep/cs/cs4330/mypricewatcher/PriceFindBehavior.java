@@ -19,5 +19,5 @@ public interface PriceFindBehavior {
      * @return current price of the product
      * @see Item
      */
-    Long findPrice(Item item);
+    Double findPrice(Item item);
 }

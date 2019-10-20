@@ -10,7 +10,9 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ItemsListAdapter extends ArrayAdapter<Item> {
     ArrayList<Item> items;
@@ -31,23 +33,29 @@ public class ItemsListAdapter extends ArrayAdapter<Item> {
         TextView itemPriceChangeView = rowView.findViewById(R.id.itemPriceChangeView);
         TextView itemInitialInfoView = rowView.findViewById(R.id.itemInitialInfoView);
 
-        itemNameView.setText(items.get(position).getName());
-        itemPriceView.setText(String.valueOf(items.get(position).getCurrentPrice()));
+        Item item = items.get(position);
 
-        if (items.get(position).getPercentageChange() > 0.0) {
+        itemNameView.setText(item.getName());
+        itemPriceView.setText(String.format("$%.2f", item.getCurrentPrice()));
+
+        if (item.getPercentageChange() > 0.0) {
             itemPriceChangeView.setText(String.format("+" + "%.2f",
-                    items.get(position).getPercentageChange()) + "%");
+                    item.getPercentageChange()) + "%");
             itemPriceChangeView.setTextColor(Color.RED);
         }
-        else if (items.get(position).getPercentageChange() < 0.0) {
+        else if (item.getPercentageChange() < 0.0) {
             itemPriceChangeView.setText(String.format("%.2f",
-                    items.get(position).getPercentageChange()) + "%");
+                    item.getPercentageChange()) + "%");
             itemPriceChangeView.setTextColor(ContextCompat.getColor(context,
                     R.color.colorPrimaryDark));
         }
         else
             itemPriceChangeView.setText(String.format("%.2f",
-                    items.get(position).getPercentageChange()) + "%");
+                    item.getPercentageChange()) + "%");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        itemInitialInfoView.setText(String.format("%s ($%.2f)", sdf.format(new Date()),
+                item.getInitialPrice()));
 
         return rowView;
     }

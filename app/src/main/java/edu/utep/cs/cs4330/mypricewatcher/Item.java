@@ -8,7 +8,7 @@ package edu.utep.cs.cs4330.mypricewatcher;
  */
 public class Item {
     private String url, name;
-    private Long initialPrice, currentPrice;
+    private Double initialPrice, currentPrice;
 
     /**
      * Class constructor.
@@ -19,8 +19,8 @@ public class Item {
     Item(String name, String url) {
         this.url = url;
         this.name = name;
-        this.initialPrice = new Long(0);
-        this.currentPrice = new Long(0);
+        this.initialPrice = new Double(0);
+        this.currentPrice = new Double(0);
     }
 
     public boolean equals(Object obj){
@@ -34,7 +34,7 @@ public class Item {
     }
 
     public Double getPercentageChange() {
-        return ((double)(currentPrice - initialPrice) / (double)initialPrice) * 100;
+        return ((currentPrice - initialPrice) / initialPrice) * 100;
     }
 
     /**
@@ -61,7 +61,7 @@ public class Item {
      *
      * @return initial price of the item/product
      */
-    public Long getInitialPrice() {
+    public Double getInitialPrice() {
         return initialPrice;
     }
 
@@ -70,7 +70,7 @@ public class Item {
      *
      * @return current price of the item/product
      */
-    public Long getCurrentPrice() {
+    public Double getCurrentPrice() {
         return currentPrice;
     }
 
@@ -97,7 +97,7 @@ public class Item {
      *
      * @param initialPrice new value of the initial price to be set
      */
-    public void setInitialPrice(Long initialPrice) {
+    public void setInitialPrice(Double initialPrice) {
         this.initialPrice = initialPrice;
     }
 
@@ -106,7 +106,7 @@ public class Item {
      *
      * @param currentPrice new value of the current price to be set
      */
-    public void setCurrentPrice(Long currentPrice) {
+    public void setCurrentPrice(Double currentPrice) {
         this.currentPrice = currentPrice;
     }
 
