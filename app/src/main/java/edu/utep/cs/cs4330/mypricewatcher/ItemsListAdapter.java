@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
@@ -15,15 +16,17 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ItemsListAdapter extends ArrayAdapter<Item> {
-    ArrayList<Item> items;
-    Context context;
+    private ArrayList<Item> items;
+    private Context context;
 
-    public ItemsListAdapter(Context context, ArrayList<Item> data) {
+    ItemsListAdapter(Context context, ArrayList<Item> data) {
         super(context, R.layout.fragment_item_detail, data);
         this.items = data;
         this.context = context;
     }
 
+    @Override
+    @NonNull
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View rowView = inflater.inflate(R.layout.fragment_item_detail, parent,false);

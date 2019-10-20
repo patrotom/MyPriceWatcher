@@ -68,16 +68,16 @@ public class MainActivity extends AppCompatActivity {
     private void itemClicked(AdapterView<?> parent, final View view, int position, long id) {
         Item item = (Item) parent.getItemAtPosition(position);
 
-        if (item != null) {
-            Intent intent = new Intent(this, ItemDetailActivity.class);
-            intent.putExtra("name", item.getName());
-            intent.putExtra("url", item.getUrl());
-            intent.putExtra("initialPrice", item.getInitialPrice());
-            intent.putExtra("currentPrice", item.getCurrentPrice());
-            intent.putExtra("percentageChange", item.getPercentageChange());
-
-            startActivity(intent);
-        }
+//        if (item != null) {
+//            Intent intent = new Intent(this, ItemEditActivity.class);
+//            intent.putExtra("name", item.getName());
+//            intent.putExtra("url", item.getUrl());
+//            intent.putExtra("initialPrice", item.getInitialPrice());
+//            intent.putExtra("currentPrice", item.getCurrentPrice());
+//            intent.putExtra("percentageChange", item.getPercentageChange());
+//
+//            startActivity(intent);
+//        }
     }
 
     @Override
