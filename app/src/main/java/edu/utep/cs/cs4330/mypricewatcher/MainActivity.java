@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -86,10 +87,9 @@ public class MainActivity extends AppCompatActivity {
 
                     Item item = priceFinder.getItemByName(oldName);
 
-                    if (priceFinder.renameItem(item, newName)) {
-                        item.setUrl(url);
+                    item.setUrl(url);
+                    if (priceFinder.renameItem(item, newName))
                         itemsListAdapter.notifyDataSetChanged();
-                    }
                 }
                 break;
             case 2:
@@ -125,8 +125,10 @@ public class MainActivity extends AppCompatActivity {
                 diaBox.show();
                 return true;
             case R.id.action_open_browser:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(i.getUrl()));
-                startActivity(browserIntent);
+                if (Patterns.WEB_URL.matcher(i.getUrl()).matches()) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(i.getUrl()));
+                    startActivity(browserIntent);
+                }
                 return true;
             default:
                 return super.onContextItemSelected(item);
