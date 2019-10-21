@@ -15,16 +15,37 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Represents custom list view adapter, which is used to display the added items.
+ *
+ * @author Tomas Patro
+ * @version 0.2
+ * @see MainActivity
+ */
 public class ItemsListAdapter extends ArrayAdapter<Item> {
     private ArrayList<Item> items;
     private Context context;
 
+    /**
+     * Class constructor.
+     *
+     * @param context current context of the application
+     * @param data list of the items to be displayed
+     */
     ItemsListAdapter(Context context, ArrayList<Item> data) {
         super(context, R.layout.fragment_item_detail, data);
         this.items = data;
         this.context = context;
     }
 
+    /**
+     * Sets data of the particular item to the views representing particular attributes of the item.
+     *
+     * @param position numerical position of the item in the menu
+     * @param view current processed view
+     * @param parent parent view group
+     * @return
+     */
     @Override
     @NonNull
     public View getView(int position, View view, ViewGroup parent) {

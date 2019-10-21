@@ -20,7 +20,7 @@ import android.widget.ListView;
  * to user after they run the application.
  *
  * @author Tomas Patro
- * @version 0.1
+ * @version 0.2
  * @see PriceFinder
  * @see SimulatedBehavior
  */
