@@ -21,13 +21,14 @@ import android.widget.ListView;
  * to user after they run the application.
  *
  * @author Tomas Patro
- * @version 0.2
- * @see PriceFinder
+ * @version 0.3
+ * @see ItemManager
  * @see SimulatedBehavior
  */
 public class MainActivity extends AppCompatActivity {
-    private PriceFinder priceFinder;
+    private ItemManager itemManager;
     private ItemsListAdapter itemsListAdapter;
+    private ListView itemListView;
 
     /**
      * Method which is called when the activity is created. It is used to initialize graphic
@@ -44,16 +45,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        priceFinder = new PriceFinder(new SimulatedBehavior());
-
-        itemsListAdapter = new ItemsListAdapter(this,
-                priceFinder.getItems());
-
-        ListView itemListView = findViewById(R.id.itemListView);
-        itemListView.setAdapter(itemsListAdapter);
-
-        registerForContextMenu(itemListView);
-        itemListView.setOnItemClickListener(this::itemClicked);
+        refreshList();
 
         checkForExternalUrlSource();
     }
@@ -62,41 +54,26 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                priceFinder.updateData();
+                itemManager.updateAllPrices();
+                refreshList();
                 itemsListAdapter.notifyDataSetChanged();
                 return true;
             case R.id.action_add_item:
                 Intent intent = new Intent(this, ItemFormActivity.class);
-                intent.putExtra("isNewItem", true);
-                startActivityForResult(intent, 2);
+                intent.putExtra("id", -1);
+                startActivityForResult(intent, 1);
             default:
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         switch (requestCode) {
             case 1:
                 if (resultCode == Activity.RESULT_OK) {
-                    String oldName = data.getStringExtra("oldName");
-                    String newName = data.getStringExtra("name");
-                    String url = data.getStringExtra("url");
-
-                    Item item = priceFinder.getItemByName(oldName);
-
-                    item.setUrl(url);
-                    if (priceFinder.renameItem(item, newName))
-                        itemsListAdapter.notifyDataSetChanged();
-                }
-                break;
-            case 2:
-                if (resultCode == Activity.RESULT_OK) {
-                    if (priceFinder.addItem(new Item(data.getStringExtra("name"),
-                            data.getStringExtra("url"))))
-                        itemsListAdapter.notifyDataSetChanged();
+                    refreshList();
+                    itemsListAdapter.notifyDataSetChanged();
                 }
                 break;
         }
@@ -140,9 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (item != null) {
             Intent intent = new Intent(this, ItemFormActivity.class);
-            intent.putExtra("name", item.getName());
-            intent.putExtra("url", item.getUrl());
-            intent.putExtra("isNewItem", false);
+            intent.putExtra("id", item.getId());
 
             startActivityForResult(intent, 1);
         }
@@ -168,8 +143,9 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to delete this item?")
                 .setIcon(R.drawable.delete_icon)
                 .setPositiveButton("Delete", (DialogInterface dialog, int whichButton) -> {
-                    if (priceFinder.removeItem(item))
-                        itemsListAdapter.notifyDataSetChanged();
+                    itemManager.removeItem(item.getId());
+                    refreshList();
+                    itemsListAdapter.notifyDataSetChanged();
                     dialog.dismiss();
                 })
                 .setNegativeButton("Cancel", (DialogInterface dialog, int which) ->
@@ -178,4 +154,18 @@ public class MainActivity extends AppCompatActivity {
 
         return deleteDialogBox;
     }
+
+    private void refreshList() {
+        itemManager = new ItemManager(new SimulatedBehavior(), this);
+
+        itemsListAdapter = new ItemsListAdapter(this,
+                itemManager.getItems());
+
+        itemListView = findViewById(R.id.itemListView);
+        itemListView.setAdapter(itemsListAdapter);
+
+        registerForContextMenu(itemListView);
+        itemListView.setOnItemClickListener(this::itemClicked);
+    }
+
 }

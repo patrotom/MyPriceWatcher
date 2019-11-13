@@ -7,7 +7,7 @@ import java.util.Random;
  * {@code Random.nextGaussian} method.
  *
  * @author Tomas Patro
- * @version 0.2
+ * @version 0.3
  * @see PriceFindBehavior
  * @see ScraperBehavior
  * @see Random
