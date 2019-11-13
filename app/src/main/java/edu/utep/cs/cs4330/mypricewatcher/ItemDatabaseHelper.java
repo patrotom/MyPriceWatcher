@@ -44,7 +44,6 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper{
     }
 
     public int addItem(Item item) {
-        Log.w("DB", "Adding new item with name " + item.getName());
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, item.getName());
@@ -119,7 +118,6 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper{
     }
 
     public void update(Item item) {
-        Log.w("DB", "Updating item with current price " + item.getCurrentPrice());
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, item.getName());
