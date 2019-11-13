@@ -54,6 +54,33 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper{
         db.close();
     }
 
+    public Item getItem(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.query(ITEMS_TABLE,
+                COLUMNS,
+                " id = ?",
+                new String[] { String.valueOf(id) },
+                null,
+                null,
+                null,
+                null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        id = Integer.parseInt(cursor.getString(0));
+        String name = cursor.getString(1);
+        String url = cursor.getString(2);
+        Double initialPrice = cursor.getDouble(3);
+        Double currentPrice = cursor.getDouble(4);
+
+        Item item = new Item(id, name, url);
+        item.setInitialPrice(initialPrice);
+        item.setCurrentPrice(currentPrice);
+
+        return item;
+    }
+
     public List<Item> allItems() {
         List<Item> items = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + ITEMS_TABLE;

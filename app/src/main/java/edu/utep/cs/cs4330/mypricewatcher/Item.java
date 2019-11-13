@@ -11,6 +11,10 @@ public class Item {
     private String url, name;
     private Double initialPrice, currentPrice;
 
+    Item(String name, String url) {
+        this(0, name, url);
+    }
+
     /**
      * Class constructor.
      *
