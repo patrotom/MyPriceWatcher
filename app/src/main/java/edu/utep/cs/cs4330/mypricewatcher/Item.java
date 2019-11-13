@@ -7,8 +7,13 @@ package edu.utep.cs.cs4330.mypricewatcher;
  * @version 0.2
  */
 public class Item {
+    private int id;
     private String url, name;
     private Double initialPrice, currentPrice;
+
+    Item(String name, String url) {
+        this(0, name, url);
+    }
 
     /**
      * Class constructor.
@@ -16,9 +21,10 @@ public class Item {
      * @param name name of the item/product
      * @param url URL of the item/product
      */
-    Item(String name, String url) {
-        this.url = url;
+    Item(int id, String name, String url) {
+        this.id = id;
         this.name = name;
+        this.url = url;
         this.initialPrice = new Double(0);
         this.currentPrice = new Double(0);
     }
@@ -31,6 +37,8 @@ public class Item {
     public Double getPercentageChange() {
         return ((currentPrice - initialPrice) / initialPrice) * 100;
     }
+
+    public int getId() { return id; }
 
     /**
      * Standard getter method which returns the URL of the item/product.
@@ -68,6 +76,8 @@ public class Item {
     public Double getCurrentPrice() {
         return currentPrice;
     }
+
+    public void setId(int id) { this.id = id; }
 
     /**
      * Standard setter method which sets the value of the URL of the item/product.

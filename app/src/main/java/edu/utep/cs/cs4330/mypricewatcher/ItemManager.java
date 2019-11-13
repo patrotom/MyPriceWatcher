@@ -1,6 +1,9 @@
 package edu.utep.cs.cs4330.mypricewatcher;
 
+import android.content.Context;
+
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents the handler for the items/products. It uses different strategies from the strategy
@@ -12,8 +15,8 @@ import java.util.ArrayList;
  * @see SimulatedBehavior
  * @see ScraperBehavior
  */
-public class PriceFinder {
-    private ArrayList<Item> items;
+public class ItemManager {
+    private ItemDatabaseHelper dbHelper;
     private PriceFindBehavior priceFindBehavior;
 
     /**
@@ -21,9 +24,9 @@ public class PriceFinder {
      *
      * @param priceFindBehavior strategy which is used to calculate the price
      */
-    PriceFinder(PriceFindBehavior priceFindBehavior) {
+    ItemManager(PriceFindBehavior priceFindBehavior, Context context) {
         this.priceFindBehavior = priceFindBehavior;
-        items = new ArrayList<>();
+        dbHelper = new ItemDatabaseHelper(context);
     }
 
     /**
@@ -32,24 +35,28 @@ public class PriceFinder {
      * @param item new item to be added to the list
      * @return
      */
-    public boolean addItem(Item item) {
-        if (getItemByName(item.getName()) != null)
-            return false;
+    public int addItem(String name, String url) {
+        Item item = new Item(name, url);
 
         Double price = priceFindBehavior.findPrice(item);
         item.setInitialPrice(price);
         item.setCurrentPrice(price);
 
-        items.add(item);
-        return true;
+        return dbHelper.addItem(item);
     }
 
     /**
      * Updates current prices of all items in the list.
      */
-    public void updateData() {
-        for (Item item: items)
+    public void updateAllPrices() {
+        for (Item item: getItems()) {
             item.setCurrentPrice(priceFindBehavior.findPrice(item));
+            dbHelper.update(item);
+        }
+    }
+
+    public Item getItem(int id) {
+        return dbHelper.getItem(id);
     }
 
     /**
@@ -57,21 +64,8 @@ public class PriceFinder {
      *
      * @return list of items
      */
-    public ArrayList<Item> getItems() {
-        return items;
-    }
-
-    /**
-     * Returns item with the specified name. If the item cannot be found returns, {@code null}.
-     *
-     * @param name name of the item we look for
-     * @return item with the specified name or null
-     */
-    public Item getItemByName(String name) {
-        for (Item i: items)
-            if (i.getName().equals(name))
-                return i;
-        return null;
+    public List<Item> getItems() {
+        return dbHelper.allItems();
     }
 
     /**
@@ -80,8 +74,8 @@ public class PriceFinder {
      * @param item item to be removed
      * @return indicator of the success/failure of the remove operation
      */
-    public boolean removeItem(Item item) {
-        return items.remove(item);
+    public void removeItem(int id) {
+        dbHelper.delete(id);
     }
 
     /**
@@ -92,12 +86,9 @@ public class PriceFinder {
      * @param newName new name for the item
      * @return indicator of the success/failure of the rename operation
      */
-    public boolean renameItem(Item item, String newName) {
-        if (getItemByName(newName) != null || item == null)
-            return false;
-
-        item.setName(newName);
-
-        return true;
+    public void updateItem(Item item, String name, String url) {
+        item.setName(name);
+        item.setUrl(url);
+        dbHelper.update(item);
     }
 }
