@@ -4,10 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -15,6 +21,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Represents the main activity of the application which represents the first and main screen shown
@@ -54,9 +64,21 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                itemManager.updateAllPrices();
-                refreshList();
-                itemsListAdapter.notifyDataSetChanged();
+                new AsyncTask<Void, Void, Void>() {
+                    protected Void doInBackground(Void... unused) {
+                        if (!hasActiveInternetConnection()) {
+                            startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
+                        }
+                        else {
+                            itemManager.updateAllPrices();
+                        }
+                        return null;
+                    }
+                    protected void onPostExecute(Void unused) {
+                        refreshList();
+                        itemsListAdapter.notifyDataSetChanged();
+                    }
+                }.execute();
                 return true;
             case R.id.action_add_item:
                 Intent intent = new Intent(this, ItemFormActivity.class);
@@ -168,4 +190,29 @@ public class MainActivity extends AppCompatActivity {
         itemListView.setOnItemClickListener(this::itemClicked);
     }
 
+    private boolean hasActiveInternetConnection() {
+        if (isNetworkAvailable()) {
+            try {
+                HttpURLConnection urlc = (HttpURLConnection)
+                        (new URL("http://www.google.com").openConnection());
+                urlc.setRequestProperty("User-Agent", "Test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1500);
+                urlc.connect();
+                return (urlc.getResponseCode() == 200);
+            } catch (IOException e) {
+                Log.e("asd", "Error checking internet connection", e);
+            }
+        } else {
+            Log.d("asd", "No network available!");
+        }
+        return false;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null;
+    }
 }
