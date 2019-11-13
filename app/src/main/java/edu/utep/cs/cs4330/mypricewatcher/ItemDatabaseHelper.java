@@ -5,11 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the database helper which is used to perform the DB operations over the Item model.
+ *
+ * @author Tomas Patro
+ * @version 0.3
+ * @see Item
+ */
 public class ItemDatabaseHelper extends SQLiteOpenHelper{
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "price_watcher_db";
@@ -20,8 +26,14 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper{
     private static final String KEY_URL = "url";
     private static final String KEY_INITIAL_PRICE = "initial_price";
     private static final String KEY_CURRENT_PRICE = "current_price";
-    private static final String[] COLUMNS = { KEY_ID, KEY_NAME, KEY_URL, KEY_INITIAL_PRICE, KEY_CURRENT_PRICE };
+    private static final String[] COLUMNS = { KEY_ID, KEY_NAME, KEY_URL, KEY_INITIAL_PRICE,
+            KEY_CURRENT_PRICE };
 
+    /**
+     * Class constructor.
+     *
+     * @param context current context of the app
+     */
     public ItemDatabaseHelper(Context context){
         super (context, DB_NAME, null, DB_VERSION);
     }
@@ -43,6 +55,12 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper{
         onCreate(database);
     }
 
+    /**
+     * Adds a new item to the database.
+     *
+     * @param item new item to be added to the database
+     * @return id of the newly added item
+     */
     public int addItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -56,6 +74,12 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper{
         return (int) id;
     }
 
+    /**
+     * Retrieves an existing item from the database based on the ID.
+     *
+     * @param id ID of the item to be retrieved from the database
+     * @return retrieved item
+     */
     public Item getItem(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(ITEMS_TABLE,
@@ -83,6 +107,11 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper{
         return item;
     }
 
+    /**
+     * Retrieves all items from the database.
+     *
+     * @return all item from the database
+     */
     public List<Item> allItems() {
         List<Item> items = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + ITEMS_TABLE;
@@ -105,18 +134,32 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper{
         return items;
     }
 
+    /**
+     * Deletes all items from the database.
+     *
+     */
     public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(ITEMS_TABLE, null, new String[]{});
         db.close();
     }
 
+    /**
+     * Deletes a particular item from the database based on the ID.
+     *
+     * @param id id of the item to be deleted from the database
+     */
     public void delete(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(ITEMS_TABLE, KEY_ID + " = ?", new String[] { Integer.toString(id) } );
         db.close();
     }
 
+    /**
+     * Updates a particular item.
+     *
+     * @param item item to be updated
+     */
     public void update(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

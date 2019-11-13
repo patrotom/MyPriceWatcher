@@ -21,7 +21,7 @@ import android.widget.ListView;
  * to user after they run the application.
  *
  * @author Tomas Patro
- * @version 0.2
+ * @version 0.3
  * @see ItemManager
  * @see SimulatedBehavior
  */

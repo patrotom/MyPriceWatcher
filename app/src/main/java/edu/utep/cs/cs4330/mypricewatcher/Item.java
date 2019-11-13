@@ -4,13 +4,19 @@ package edu.utep.cs.cs4330.mypricewatcher;
  * Represents the item which is the direct representation of the product with its price.
  *
  * @author Tomas Patro
- * @version 0.2
+ * @version 0.3
  */
 public class Item {
     private int id;
     private String url, name;
     private Double initialPrice, currentPrice;
 
+    /**
+     * Class constructor.
+     *
+     * @param name name of the item/product
+     * @param url URL of the item/product
+     */
     Item(String name, String url) {
         this(0, name, url);
     }
@@ -18,6 +24,7 @@ public class Item {
     /**
      * Class constructor.
      *
+     * @param id id of the item/product
      * @param name name of the item/product
      * @param url URL of the item/product
      */
@@ -38,6 +45,11 @@ public class Item {
         return ((currentPrice - initialPrice) / initialPrice) * 100;
     }
 
+    /**
+     * Standard getter method which returns the unique ID of the item/product.
+     *
+     * @return ID of the item/product
+     */
     public int getId() { return id; }
 
     /**
@@ -77,6 +89,11 @@ public class Item {
         return currentPrice;
     }
 
+    /**
+     * Standard setter method which sets the value of the ID of the item/product.
+     *
+     * @param id new value of the ID to be set
+     */
     public void setId(int id) { this.id = id; }
 
     /**

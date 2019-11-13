@@ -13,7 +13,7 @@ import android.widget.TextView;
  * existing one.
  *
  * @author Tomas Patro
- * @version 0.2
+ * @version 0.3
  * @see MainActivity
  */
 public class ItemFormActivity extends AppCompatActivity {

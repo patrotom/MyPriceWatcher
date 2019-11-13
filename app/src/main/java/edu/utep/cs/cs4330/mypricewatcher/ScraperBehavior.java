@@ -13,7 +13,7 @@ import java.net.URLConnection;
  * this strategy is not implemented yet.
  *
  * @author Tomas Patro
- * @version 0.2
+ * @version 0.3
  * @see PriceFindBehavior
  * @see SimulatedBehavior
  */

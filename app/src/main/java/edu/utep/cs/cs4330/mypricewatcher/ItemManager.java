@@ -2,7 +2,6 @@ package edu.utep.cs.cs4330.mypricewatcher;
 
 import android.content.Context;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,7 +9,7 @@ import java.util.List;
  * pattern to get the price of the item/product.
  *
  * @author Tomas Patro
- * @version 0.2
+ * @version 0.3
  * @see PriceFindBehavior
  * @see SimulatedBehavior
  * @see ScraperBehavior
@@ -30,9 +29,10 @@ public class ItemManager {
     }
 
     /**
-     * Adds new item to the list. If the item with the same name already exists, returns false.
+     * Adds a new item to the database and returns the ID of the added item.
      *
-     * @param item new item to be added to the list
+     * @param name name of the new item
+     * @param url url of the new item
      * @return
      */
     public int addItem(String name, String url) {
@@ -46,7 +46,7 @@ public class ItemManager {
     }
 
     /**
-     * Updates current prices of all items in the list.
+     * Updates current prices of all items in the database.
      */
     public void updateAllPrices() {
         for (Item item: getItems()) {
@@ -55,6 +55,12 @@ public class ItemManager {
         }
     }
 
+    /**
+     * Returns a particular item from the database based on the given ID.
+     *
+     * @param id id of the item to be retrieved from the database
+     * @return
+     */
     public Item getItem(int id) {
         return dbHelper.getItem(id);
     }
@@ -69,22 +75,20 @@ public class ItemManager {
     }
 
     /**
-     * Removes given item from the list. If the item cannot be found, returns false.
+     * Removes given item from the database.
      *
-     * @param item item to be removed
-     * @return indicator of the success/failure of the remove operation
+     * @param id id of the item to be removed
      */
     public void removeItem(int id) {
         dbHelper.delete(id);
     }
 
     /**
-     * Replaces the name of the given item with the given string. If an item with the given name
-     * already exists, returns false.
+     * Updates the given item with the new values.
      *
-     * @param item item to be renamed
-     * @param newName new name for the item
-     * @return indicator of the success/failure of the rename operation
+     * @param item item to be updated
+     * @param name new name for the item
+     * @param url new url for the item
      */
     public void updateItem(Item item, String name, String url) {
         item.setName(name);
