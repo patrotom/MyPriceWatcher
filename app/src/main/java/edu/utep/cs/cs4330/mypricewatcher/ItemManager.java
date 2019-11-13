@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @see SimulatedBehavior
  * @see ScraperBehavior
  */
-public class PriceFinder {
+public class ItemManager {
     private ArrayList<Item> items;
     private PriceFindBehavior priceFindBehavior;
 
@@ -21,7 +21,7 @@ public class PriceFinder {
      *
      * @param priceFindBehavior strategy which is used to calculate the price
      */
-    PriceFinder(PriceFindBehavior priceFindBehavior) {
+    ItemManager(PriceFindBehavior priceFindBehavior) {
         this.priceFindBehavior = priceFindBehavior;
         items = new ArrayList<>();
     }

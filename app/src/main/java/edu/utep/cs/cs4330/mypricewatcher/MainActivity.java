@@ -22,11 +22,11 @@ import android.widget.ListView;
  *
  * @author Tomas Patro
  * @version 0.2
- * @see PriceFinder
+ * @see ItemManager
  * @see SimulatedBehavior
  */
 public class MainActivity extends AppCompatActivity {
-    private PriceFinder priceFinder;
+    private ItemManager itemManager;
     private ItemsListAdapter itemsListAdapter;
 
     /**
@@ -44,10 +44,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        priceFinder = new PriceFinder(new SimulatedBehavior());
+        itemManager = new ItemManager(new SimulatedBehavior());
 
         itemsListAdapter = new ItemsListAdapter(this,
-                priceFinder.getItems());
+                itemManager.getItems());
 
         ListView itemListView = findViewById(R.id.itemListView);
         itemListView.setAdapter(itemsListAdapter);
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                priceFinder.updateData();
+                itemManager.updateData();
                 itemsListAdapter.notifyDataSetChanged();
                 return true;
             case R.id.action_add_item:
@@ -85,16 +85,16 @@ public class MainActivity extends AppCompatActivity {
                     String newName = data.getStringExtra("name");
                     String url = data.getStringExtra("url");
 
-                    Item item = priceFinder.getItemByName(oldName);
+                    Item item = itemManager.getItemByName(oldName);
 
                     item.setUrl(url);
-                    if (priceFinder.renameItem(item, newName))
+                    if (itemManager.renameItem(item, newName))
                         itemsListAdapter.notifyDataSetChanged();
                 }
                 break;
             case 2:
                 if (resultCode == Activity.RESULT_OK) {
-                    if (priceFinder.addItem(new Item(data.getStringExtra("name"),
+                    if (itemManager.addItem(new Item(data.getStringExtra("name"),
                             data.getStringExtra("url"))))
                         itemsListAdapter.notifyDataSetChanged();
                 }
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to delete this item?")
                 .setIcon(R.drawable.delete_icon)
                 .setPositiveButton("Delete", (DialogInterface dialog, int whichButton) -> {
-                    if (priceFinder.removeItem(item))
+                    if (itemManager.removeItem(item))
                         itemsListAdapter.notifyDataSetChanged();
                     dialog.dismiss();
                 })
