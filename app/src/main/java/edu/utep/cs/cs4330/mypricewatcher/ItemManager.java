@@ -1,5 +1,7 @@
 package edu.utep.cs.cs4330.mypricewatcher;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +24,9 @@ public class ItemManager {
      *
      * @param priceFindBehavior strategy which is used to calculate the price
      */
-    ItemManager(PriceFindBehavior priceFindBehavior) {
+    ItemManager(PriceFindBehavior priceFindBehavior, Context context) {
         this.priceFindBehavior = priceFindBehavior;
+        dbHelper = new ItemDatabaseHelper(context);
     }
 
     /**
@@ -32,15 +35,14 @@ public class ItemManager {
      * @param item new item to be added to the list
      * @return
      */
-    public boolean addItem(String name, String url) {
+    public int addItem(String name, String url) {
         Item item = new Item(name, url);
 
         Double price = priceFindBehavior.findPrice(item);
         item.setInitialPrice(price);
         item.setCurrentPrice(price);
 
-        dbHelper.addItem(item);
-        return true;
+        return dbHelper.addItem(item);
     }
 
     /**
@@ -51,6 +53,10 @@ public class ItemManager {
             item.setCurrentPrice(priceFindBehavior.findPrice(item));
             dbHelper.update(item);
         }
+    }
+
+    public Item getItem(int id) {
+        return dbHelper.getItem(id);
     }
 
     /**

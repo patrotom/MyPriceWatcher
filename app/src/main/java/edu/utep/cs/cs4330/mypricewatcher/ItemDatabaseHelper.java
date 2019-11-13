@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,8 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper{
         onCreate(database);
     }
 
-    public void addItem(Item item) {
+    public int addItem(Item item) {
+        Log.w("DB", "Adding new item with name " + item.getName());
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, item.getName());
@@ -52,6 +54,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper{
         long id = db.insert(ITEMS_TABLE, null, values);
         item.setId((int) id);
         db.close();
+        return (int) id;
     }
 
     public Item getItem(int id) {
@@ -92,7 +95,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper{
                 String name = cursor.getString(1);
                 String url = cursor.getString(2);
                 Double initialPrice = cursor.getDouble(3);
-                Double currentPrice = cursor.getDouble(3);
+                Double currentPrice = cursor.getDouble(4);
 
                 Item item = new Item(id, name, url);
                 item.setInitialPrice(initialPrice);
@@ -116,6 +119,7 @@ public class ItemDatabaseHelper extends SQLiteOpenHelper{
     }
 
     public void update(Item item) {
+        Log.w("DB", "Updating item with current price " + item.getCurrentPrice());
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, item.getName());

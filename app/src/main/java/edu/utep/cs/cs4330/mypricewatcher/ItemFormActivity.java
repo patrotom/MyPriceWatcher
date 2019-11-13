@@ -19,10 +19,9 @@ import android.widget.TextView;
 public class ItemFormActivity extends AppCompatActivity {
     private EditText nameEditText;
     private EditText urlEditText;
-    private TextView ediItemHeading;
-    private String oldName;
-    private boolean isNewItem;
-
+    private TextView editItemHeading;
+    private ItemManager itemManager;
+    private int id;
 
     /**
      * Method which is called when the activity is created. It checks whether we are creating new
@@ -38,23 +37,20 @@ public class ItemFormActivity extends AppCompatActivity {
 
         nameEditText = findViewById(R.id.nameEditText);
         urlEditText = findViewById(R.id.urlEditText);
-        ediItemHeading = findViewById(R.id.editItemHeading);
+        editItemHeading = findViewById(R.id.editItemHeading);
 
         Intent intent = getIntent();
 
-        isNewItem = intent.getBooleanExtra("isNewItem", true);
+        id = intent.getIntExtra("id", -1);
+        itemManager = new ItemManager(new SimulatedBehavior(), this);
 
-        String url = intent.getStringExtra("url");
-
-        if (url != null)
-            urlEditText.setText(intent.getStringExtra("url"));
-
-        if (!isNewItem) {
-            oldName = intent.getStringExtra("name");
-            nameEditText.setText(oldName);
+        if (id == -1) {
+            editItemHeading.setText("Add Item");
         }
         else {
-            ediItemHeading.setText("Add Item");
+            Item item = itemManager.getItem(id);
+            urlEditText.setText(item.getUrl());
+            nameEditText.setText(item.getName());
         }
     }
 
@@ -66,11 +62,18 @@ public class ItemFormActivity extends AppCompatActivity {
      */
     public void submitClicked(View view) {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("name", String.valueOf(nameEditText.getText()));
-        if (!isNewItem)
-            returnIntent.putExtra("oldName", oldName);
-        returnIntent.putExtra("url", String.valueOf(urlEditText.getText()));
-        setResult(Activity.RESULT_OK,returnIntent);
+        String name = String.valueOf(nameEditText.getText());
+        String url = String.valueOf(urlEditText.getText());
+
+        if (id == -1) {
+            id = itemManager.addItem(name, url);
+        }
+        else {
+            Item item = itemManager.getItem(id);
+            itemManager.updateItem(item, name, url);
+        }
+
+        setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
 }

@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Represents custom list view adapter, which is used to display the added items.
@@ -23,7 +24,7 @@ import java.util.Date;
  * @see MainActivity
  */
 public class ItemsListAdapter extends ArrayAdapter<Item> {
-    private ArrayList<Item> items;
+    private List<Item> items;
     private Context context;
 
     /**
@@ -32,7 +33,7 @@ public class ItemsListAdapter extends ArrayAdapter<Item> {
      * @param context current context of the application
      * @param data list of the items to be displayed
      */
-    ItemsListAdapter(Context context, ArrayList<Item> data) {
+    ItemsListAdapter(Context context, List<Item> data) {
         super(context, R.layout.fragment_item_detail, data);
         this.items = data;
         this.context = context;
