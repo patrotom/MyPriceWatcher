@@ -23,10 +23,8 @@ import android.widget.Toast;
 public class ItemFormActivity extends AppCompatActivity {
     private EditText nameEditText;
     private EditText urlEditText;
-    private TextView editItemHeading;
     private ItemManager itemManager;
     private int id;
-    private boolean newItem;
 
     /**
      * Method which is called when the activity is created. It checks whether we are creating new
@@ -42,17 +40,15 @@ public class ItemFormActivity extends AppCompatActivity {
 
         nameEditText = findViewById(R.id.nameEditText);
         urlEditText = findViewById(R.id.urlEditText);
-        editItemHeading = findViewById(R.id.editItemHeading);
+        TextView editItemHeading = findViewById(R.id.editItemHeading);
 
         Intent intent = getIntent();
 
         id = intent.getIntExtra("id", -1);
         itemManager = new ItemManager(new ScraperBehavior(), this);
 
-        if (id == -1) {
+        if (id == -1)
             editItemHeading.setText("Add Item");
-            newItem = true;
-        }
         else {
             Item item = itemManager.getItem(id);
             urlEditText.setText(item.getUrl());

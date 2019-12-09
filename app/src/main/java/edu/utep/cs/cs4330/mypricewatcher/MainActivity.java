@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        startService(new Intent(this, ConnectionCheckService.class));
+
         refreshList();
 
         checkForExternalUrlSource();
@@ -66,12 +68,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_refresh:
                 new AsyncTask<Void, Void, Void>() {
                     protected Void doInBackground(Void... unused) {
-                        if (!hasActiveInternetConnection()) {
-                            startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
-                        }
-                        else {
-                            itemManager.updateAllPrices();
-                        }
+                        itemManager.updateAllPrices();
                         return null;
                     }
                     protected void onPostExecute(Void unused) {
@@ -160,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private AlertDialog AskOption(Item item) {
-        AlertDialog deleteDialogBox = new AlertDialog.Builder(this)
+        return new AlertDialog.Builder(this)
                 .setTitle("Delete")
                 .setMessage("Are you sure you want to delete this item?")
                 .setIcon(R.drawable.delete_icon)
@@ -173,8 +170,6 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", (DialogInterface dialog, int which) ->
                         dialog.dismiss())
                 .create();
-
-        return deleteDialogBox;
     }
 
     private void refreshList() {
@@ -188,31 +183,5 @@ public class MainActivity extends AppCompatActivity {
 
         registerForContextMenu(itemListView);
         itemListView.setOnItemClickListener(this::itemClicked);
-    }
-
-    private boolean hasActiveInternetConnection() {
-        if (isNetworkAvailable()) {
-            try {
-                HttpURLConnection urlc = (HttpURLConnection)
-                        (new URL("http://www.google.com").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(1500);
-                urlc.connect();
-                return (urlc.getResponseCode() == 200);
-            } catch (IOException e) {
-                Log.e("asd", "Error checking internet connection", e);
-            }
-        } else {
-            Log.d("asd", "No network available!");
-        }
-        return false;
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null;
     }
 }
