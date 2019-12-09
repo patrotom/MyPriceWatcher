@@ -5,9 +5,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Represents activity which handles getting the information to create new item or edit the
@@ -23,6 +26,7 @@ public class ItemFormActivity extends AppCompatActivity {
     private TextView editItemHeading;
     private ItemManager itemManager;
     private int id;
+    private boolean newItem;
 
     /**
      * Method which is called when the activity is created. It checks whether we are creating new
@@ -47,6 +51,7 @@ public class ItemFormActivity extends AppCompatActivity {
 
         if (id == -1) {
             editItemHeading.setText("Add Item");
+            newItem = true;
         }
         else {
             Item item = itemManager.getItem(id);
@@ -62,27 +67,36 @@ public class ItemFormActivity extends AppCompatActivity {
      * @param view current view
      */
     public void submitClicked(View view) {
-        Intent returnIntent = new Intent();
         String name = String.valueOf(nameEditText.getText());
         String url = String.valueOf(urlEditText.getText());
 
+        Pair<Integer,String> validationResult = Item.validate(name, url);
+
+        if (validationResult.first != 0) {
+            makeToast(validationResult.second);
+            return;
+        }
+
         new AsyncTask<Integer, Void, Integer>() {
-            protected void onPreExecute() {
-                // Pre Code
-            }
+            protected void onPreExecute() {}
             protected Integer doInBackground(Integer... params) {
                 if (params[0] == -1)
                     id = itemManager.addItem(name, url);
                 else {
                     Item item = itemManager.getItem(params[0]);
-                    itemManager.updateItem(item, name, url);
+                    id = itemManager.updateItem(item, name, url);
                 }
                 return id;
             }
             protected void onPostExecute(Integer id) {
+                Intent returnIntent = new Intent();
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
             }
         }.execute(id);
+    }
+
+    private void makeToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 }

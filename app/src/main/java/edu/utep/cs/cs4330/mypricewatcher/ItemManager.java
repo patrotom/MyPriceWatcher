@@ -39,6 +39,10 @@ public class ItemManager {
         Item item = new Item(name, url);
 
         Double price = priceFindBehavior.findPrice(item);
+
+        if ((int)Math.round(price) < 0.0)
+            return (int)Math.round(price);
+
         item.setInitialPrice(price);
         item.setCurrentPrice(price);
 
@@ -90,9 +94,10 @@ public class ItemManager {
      * @param name new name for the item
      * @param url new url for the item
      */
-    public void updateItem(Item item, String name, String url) {
+    public int updateItem(Item item, String name, String url) {
         item.setName(name);
         item.setUrl(url);
         dbHelper.update(item);
+        return item.getId();
     }
 }
