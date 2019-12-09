@@ -2,11 +2,18 @@ package edu.utep.cs.cs4330.mypricewatcher;
 
 import android.util.Log;
 
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Scanner;
 
 /**
  * Represents one of the strategies to calculate a price of an item/product. In the current version,
@@ -28,39 +35,39 @@ public class ScraperBehavior implements PriceFindBehavior {
     @Override
     public Double findPrice(Item item) {
         try {
-            String url = getUrlContent(item.getUrl());
-            // TODO
-            return 0.0;
+
+
+            Document doc = Jsoup.parse(urlToHtmlString(item.getUrl()));
+            Double price = Double.valueOf(doc.
+                    getElementsByClass("priceView-hero-price priceView-customer-price").
+                    first().getElementsByTag("span").first().text().
+                    replace("$", ""));
+
+            return price;
         } catch (Exception e) {
-            Log.w("SC", e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
 
-    public String getUrlContent(String urlStr) {
+    private String urlToHtmlString(String url) {
         try {
-            URL url = new URL(urlStr);
-            URLConnection con = null;
-            con = url.openConnection();
-            String encoding = con.getContentEncoding();
-            if (encoding == null) {
-                encoding = "ISO-8859-1";
+            URLConnection connection = (new URL(url)).openConnection();
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
+
+            InputStream in = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            StringBuilder html = new StringBuilder();
+            for (String line; (line = reader.readLine()) != null; ) {
+                html.append(line);
             }
-            BufferedReader r = new BufferedReader(new InputStreamReader(con.getInputStream(),
-                    encoding));
-            StringBuilder sb = new StringBuilder();
-            try {
-                String s;
-                while ((s = r.readLine()) != null) {
-                    sb.append(s);
-                    sb.append("\n");
-                }
-            } finally {
-                r.close();
-            }
-            return sb.toString();
-        } catch (IOException ex) {
-            return "";
+            in.close();
+            return html.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

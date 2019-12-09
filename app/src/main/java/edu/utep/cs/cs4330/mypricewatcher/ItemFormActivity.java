@@ -3,6 +3,7 @@ package edu.utep.cs.cs4330.mypricewatcher;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -42,7 +43,7 @@ public class ItemFormActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         id = intent.getIntExtra("id", -1);
-        itemManager = new ItemManager(new SimulatedBehavior(), this);
+        itemManager = new ItemManager(new ScraperBehavior(), this);
 
         if (id == -1) {
             editItemHeading.setText("Add Item");
@@ -65,15 +66,23 @@ public class ItemFormActivity extends AppCompatActivity {
         String name = String.valueOf(nameEditText.getText());
         String url = String.valueOf(urlEditText.getText());
 
-        if (id == -1) {
-            id = itemManager.addItem(name, url);
-        }
-        else {
-            Item item = itemManager.getItem(id);
-            itemManager.updateItem(item, name, url);
-        }
-
-        setResult(Activity.RESULT_OK, returnIntent);
-        finish();
+        new AsyncTask<Integer, Void, Integer>() {
+            protected void onPreExecute() {
+                // Pre Code
+            }
+            protected Integer doInBackground(Integer... params) {
+                if (params[0] == -1)
+                    id = itemManager.addItem(name, url);
+                else {
+                    Item item = itemManager.getItem(params[0]);
+                    itemManager.updateItem(item, name, url);
+                }
+                return id;
+            }
+            protected void onPostExecute(Integer id) {
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            }
+        }.execute(id);
     }
 }

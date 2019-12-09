@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshList() {
-        itemManager = new ItemManager(new SimulatedBehavior(), this);
+        itemManager = new ItemManager(new ScraperBehavior(), this);
 
         itemsListAdapter = new ItemsListAdapter(this,
                 itemManager.getItems());
