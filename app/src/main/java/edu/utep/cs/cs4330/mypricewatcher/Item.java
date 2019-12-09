@@ -1,5 +1,10 @@
 package edu.utep.cs.cs4330.mypricewatcher;
 
+import android.util.Pair;
+
+import java.net.URL;
+import java.util.ArrayList;
+
 /**
  * Represents the item which is the direct representation of the product with its price.
  *
@@ -130,5 +135,29 @@ public class Item {
      */
     public void setCurrentPrice(Double currentPrice) {
         this.currentPrice = currentPrice;
+    }
+
+    public static Pair<Integer,String> validate(String name, String url) {
+
+        if (name.equals(""))
+            return new Pair<>(1, "Name can not be empty!");
+
+        ArrayList<String> supportedStores = new ArrayList<String>() {
+            {
+                add("bestbuy.com");
+                add("homedepot.com");
+            }
+        };
+
+        try {
+            URL u = new URL(url);
+            if (!supportedStores.contains(u.getHost().replace("www.", "")))
+                return new Pair<>(3, "Unsupported store!");
+        }
+        catch (Exception e) {
+            return new Pair<>(2, "Invalid URL!");
+        }
+
+        return new Pair<>(0, "");
     }
 }
