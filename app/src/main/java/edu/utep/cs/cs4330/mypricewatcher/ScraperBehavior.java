@@ -4,6 +4,7 @@ import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -35,19 +36,21 @@ public class ScraperBehavior implements PriceFindBehavior {
             String html = urlToHtmlString(url);
 
             if (html == null)
-                return null;
+                return -1.0;
 
             Document doc = Jsoup.parse(html);
 
             switch (url.getHost().replace("www.", "")) {
                 case "bestbuy.com":
                     return getBestBuyPrice(doc);
+                case "homedepot.com":
+                    return getHomeDepotPrice(doc);
                 default:
-                    return -1.0;
+                    return -2.0;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return -3.0;
         }
     }
 
@@ -56,6 +59,14 @@ public class ScraperBehavior implements PriceFindBehavior {
                 getElementsByClass("priceView-hero-price priceView-customer-price").
                 first().getElementsByTag("span").first().text().
                 replace("$", ""));
+    }
+
+    private Double getHomeDepotPrice(Document doc) {
+        Elements priceElements = doc.getElementById("ajaxPrice").getAllElements();
+        Double dollars = Double.valueOf(priceElements.get(2).text());
+        Double cents = Double.valueOf(priceElements.get(3).text()) / 100.00;
+
+        return dollars + cents;
     }
 
     private String urlToHtmlString(URL url) {
