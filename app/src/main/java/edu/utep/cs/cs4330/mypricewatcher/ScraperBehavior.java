@@ -2,18 +2,14 @@ package edu.utep.cs.cs4330.mypricewatcher;
 
 import android.util.Log;
 
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Scanner;
 
 /**
  * Represents one of the strategies to calculate a price of an item/product. In the current version,
@@ -35,24 +31,36 @@ public class ScraperBehavior implements PriceFindBehavior {
     @Override
     public Double findPrice(Item item) {
         try {
+            URL url = new URL(item.getUrl());
+            String html = urlToHtmlString(url);
 
+            if (html == null)
+                return null;
 
-            Document doc = Jsoup.parse(urlToHtmlString(item.getUrl()));
-            Double price = Double.valueOf(doc.
-                    getElementsByClass("priceView-hero-price priceView-customer-price").
-                    first().getElementsByTag("span").first().text().
-                    replace("$", ""));
+            Document doc = Jsoup.parse(html);
 
-            return price;
+            switch (url.getHost().replace("www.", "")) {
+                case "bestbuy.com":
+                    return getBestBuyPrice(doc);
+                default:
+                    return -1.0;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    private String urlToHtmlString(String url) {
+    private Double getBestBuyPrice(Document doc) {
+        return Double.valueOf(doc.
+                getElementsByClass("priceView-hero-price priceView-customer-price").
+                first().getElementsByTag("span").first().text().
+                replace("$", ""));
+    }
+
+    private String urlToHtmlString(URL url) {
         try {
-            URLConnection connection = (new URL(url)).openConnection();
+            URLConnection connection = url.openConnection();
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
             connection.connect();
