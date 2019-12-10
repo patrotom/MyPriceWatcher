@@ -13,7 +13,7 @@ import java.util.List;
  * Represents the database helper which is used to perform the DB operations over the Item model.
  *
  * @author Tomas Patro
- * @version 0.3
+ * @version 0.4
  * @see Item
  */
 public class ItemDatabaseHelper extends SQLiteOpenHelper{

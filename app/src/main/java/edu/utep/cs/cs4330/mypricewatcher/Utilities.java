@@ -10,10 +10,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
+ * Simple utility class that provides some common functionality.
+ *
  * @author Tomas Patro
- * @version 1.0
+ * @version 0.4
  */
 public class Utilities {
+
+    /**
+     * Checks whether the device is connected to the Internet.
+     *
+     * @param ctx current application context
+     * @return true if device is connected to the Internet otherwise false
+     */
     public static boolean isInternetWorking(Context ctx) {
         if (isNetworkAvailable(ctx)) {
             try {

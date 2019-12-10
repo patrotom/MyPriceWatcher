@@ -1,7 +1,5 @@
 package edu.utep.cs.cs4330.mypricewatcher;
 
-import android.util.Log;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -9,7 +7,6 @@ import org.jsoup.select.Elements;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -24,7 +21,8 @@ import java.net.URLConnection;
  */
 public class ScraperBehavior implements PriceFindBehavior {
     /**
-     * Do not use this method yet since it is not implemented yet.
+     * Finds the price of the item using its URL. It scrapes the price from the web page of the
+     * given item.
      *
      * @param item represents the item for which we want to find the current price
      * @return current price of the item. In the current version, only {@code null} value.

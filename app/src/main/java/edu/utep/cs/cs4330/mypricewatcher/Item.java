@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * Represents the item which is the direct representation of the product with its price.
  *
  * @author Tomas Patro
- * @version 0.3
+ * @version 0.4
  */
 public class Item {
     private int id;
@@ -137,6 +137,13 @@ public class Item {
         this.currentPrice = currentPrice;
     }
 
+    /**
+     * Validates attributes of new potential {@code Item} object.
+     *
+     * @param name name attribute to be validated
+     * @param url url attribute to be validated
+     * @return pair where first is success/error code and second is empty string / error message
+     */
     public static Pair<Integer,String> validate(String name, String url) {
 
         if (name.equals(""))

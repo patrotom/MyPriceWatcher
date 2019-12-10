@@ -11,6 +11,14 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.Toast;
 
+/**
+ * Activity which is started when the background service {@code ConnectionCheckService} detects that
+ * the device is not connected to the Internet.
+ *
+ * @author Tomas Patro
+ * @version 0.4
+ * @see ConnectionCheckService
+ */
 public class NoInternetActivity extends AppCompatActivity {
     private boolean retryAlreadyClicked;
 
@@ -21,6 +29,12 @@ public class NoInternetActivity extends AppCompatActivity {
         retryAlreadyClicked = false;
     }
 
+    /**
+     * Checks whether the Internet connection has been restored and returns user to the main page or
+     * shows warning that there is still no Internet connection.
+     *
+     * @param view current view
+     */
     public void retryClicked(View view) {
         if (!retryAlreadyClicked) {
             new AsyncTask<Context, Void, Pair<Context, Boolean>>() {
@@ -46,6 +60,11 @@ public class NoInternetActivity extends AppCompatActivity {
             makeToast();
     }
 
+    /**
+     * Redirects user to the network settings of the device.
+     *
+     * @param view current view
+     */
     public void settingsClicked(View view) {
         startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
     }

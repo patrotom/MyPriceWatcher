@@ -32,7 +32,7 @@ import java.net.URL;
  * to user after they run the application.
  *
  * @author Tomas Patro
- * @version 0.3
+ * @version 0.4
  * @see ItemManager
  * @see SimulatedBehavior
  */
@@ -43,10 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Method which is called when the activity is created. It is used to initialize graphic
-     * components of the application alongside the private attributes of the class. It is also used
-     * to initialize URL of the initial item which can be derived from the external source using the
-     * {@link Intent} class. Otherwise, the default value is being used which is
-     * <a href="https://www.utep.edu/">UTEP's main website</a>.
+     * components of the application alongside the private attributes of the class.
      *
      * @param savedInstanceState an attribute representing the saved state of the current instance
      *                           of the activity

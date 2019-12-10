@@ -9,7 +9,7 @@ import java.util.List;
  * pattern to get the price of the item/product.
  *
  * @author Tomas Patro
- * @version 0.3
+ * @version 0.4
  * @see PriceFindBehavior
  * @see SimulatedBehavior
  * @see ScraperBehavior

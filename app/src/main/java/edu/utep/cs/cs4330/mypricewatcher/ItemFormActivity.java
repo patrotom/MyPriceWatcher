@@ -19,7 +19,7 @@ import android.widget.Toast;
  * existing one.
  *
  * @author Tomas Patro
- * @version 0.3
+ * @version 0.4
  * @see MainActivity
  */
 public class ItemFormActivity extends AppCompatActivity {
@@ -63,8 +63,8 @@ public class ItemFormActivity extends AppCompatActivity {
     }
 
     /**
-     * Handles the click event from the submit button and returns input data back to the previous
-     * activity.
+     * Handles the click event from the submit button and persists a new item or shows appropriate
+     * error message.
      *
      * @param view current view
      */
