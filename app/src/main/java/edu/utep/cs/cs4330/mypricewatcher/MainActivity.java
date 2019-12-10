@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -38,7 +39,7 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
     private ItemManager itemManager;
     private ItemsListAdapter itemsListAdapter;
-    private ListView itemListView;
+    private ProgressBar mainProgressBar;
 
     /**
      * Method which is called when the activity is created. It is used to initialize graphic
@@ -55,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mainProgressBar = findViewById(R.id.mainProgressBar);
+
+        startService(new Intent(this, ConnectionCheckService.class));
+
         refreshList();
 
         checkForExternalUrlSource();
@@ -65,16 +70,18 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected void onPreExecute() {
+                        mainProgressBar.setVisibility(View.VISIBLE);
+                        super.onPreExecute();
+                    }
+
                     protected Void doInBackground(Void... unused) {
-                        if (!hasActiveInternetConnection()) {
-                            startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
-                        }
-                        else {
-                            itemManager.updateAllPrices();
-                        }
+                        itemManager.updateAllPrices();
                         return null;
                     }
                     protected void onPostExecute(Void unused) {
+                        mainProgressBar.setVisibility(View.GONE);
                         refreshList();
                         itemsListAdapter.notifyDataSetChanged();
                     }
@@ -91,13 +98,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 1:
-                if (resultCode == Activity.RESULT_OK) {
-                    refreshList();
-                    itemsListAdapter.notifyDataSetChanged();
-                }
-                break;
+        if (resultCode == Activity.RESULT_OK) {
+            refreshList();
+            itemsListAdapter.notifyDataSetChanged();
         }
     }
 
@@ -153,14 +156,13 @@ public class MainActivity extends AppCompatActivity {
                 "text/plain".equals(type)) {
             String url = getIntent().getStringExtra(Intent.EXTRA_TEXT);
             Intent intent = new Intent(this, ItemFormActivity.class);
-            intent.putExtra("isNewItem", true);
             intent.putExtra("url", url);
             startActivityForResult(intent, 2);
         }
     }
 
     private AlertDialog AskOption(Item item) {
-        AlertDialog deleteDialogBox = new AlertDialog.Builder(this)
+        return new AlertDialog.Builder(this)
                 .setTitle("Delete")
                 .setMessage("Are you sure you want to delete this item?")
                 .setIcon(R.drawable.delete_icon)
@@ -173,8 +175,6 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", (DialogInterface dialog, int which) ->
                         dialog.dismiss())
                 .create();
-
-        return deleteDialogBox;
     }
 
     private void refreshList() {
@@ -183,36 +183,10 @@ public class MainActivity extends AppCompatActivity {
         itemsListAdapter = new ItemsListAdapter(this,
                 itemManager.getItems());
 
-        itemListView = findViewById(R.id.itemListView);
+        ListView itemListView = findViewById(R.id.itemListView);
         itemListView.setAdapter(itemsListAdapter);
 
         registerForContextMenu(itemListView);
         itemListView.setOnItemClickListener(this::itemClicked);
-    }
-
-    private boolean hasActiveInternetConnection() {
-        if (isNetworkAvailable()) {
-            try {
-                HttpURLConnection urlc = (HttpURLConnection)
-                        (new URL("http://www.google.com").openConnection());
-                urlc.setRequestProperty("User-Agent", "Test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(1500);
-                urlc.connect();
-                return (urlc.getResponseCode() == 200);
-            } catch (IOException e) {
-                Log.e("asd", "Error checking internet connection", e);
-            }
-        } else {
-            Log.d("asd", "No network available!");
-        }
-        return false;
-    }
-
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null;
     }
 }
