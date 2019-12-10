@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,10 +47,14 @@ public class ItemFormActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         id = intent.getIntExtra("id", -1);
+        String url = intent.getStringExtra("url");
         itemManager = new ItemManager(new ScraperBehavior(), this);
 
-        if (id == -1)
+        if (id == -1) {
             editItemHeading.setText("Add Item");
+            if (url != null)
+                urlEditText.setText(url);
+        }
         else {
             Item item = itemManager.getItem(id);
             urlEditText.setText(item.getUrl());
@@ -73,8 +79,13 @@ public class ItemFormActivity extends AppCompatActivity {
             return;
         }
 
+        ProgressBar itemProgressBar = findViewById(R.id.itemProgressBar);
+        Button submitButton = findViewById(R.id.submitButton);
         new AsyncTask<Integer, Void, Integer>() {
-            protected void onPreExecute() {}
+            protected void onPreExecute() {
+                itemProgressBar.setVisibility(View.VISIBLE);
+                submitButton.setEnabled(false);
+            }
             protected Integer doInBackground(Integer... params) {
                 if (params[0] == -1)
                     id = itemManager.addItem(name, url);
@@ -85,6 +96,8 @@ public class ItemFormActivity extends AppCompatActivity {
                 return id;
             }
             protected void onPostExecute(Integer id) {
+                itemProgressBar.setVisibility(View.GONE);
+                submitButton.setEnabled(true);
                 Intent returnIntent = new Intent();
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();

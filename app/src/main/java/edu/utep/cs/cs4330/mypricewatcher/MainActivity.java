@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -38,7 +39,7 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity {
     private ItemManager itemManager;
     private ItemsListAdapter itemsListAdapter;
-    private ListView itemListView;
+    private ProgressBar mainProgressBar;
 
     /**
      * Method which is called when the activity is created. It is used to initialize graphic
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mainProgressBar = findViewById(R.id.mainProgressBar);
+
         startService(new Intent(this, ConnectionCheckService.class));
 
         refreshList();
@@ -67,11 +70,18 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 new AsyncTask<Void, Void, Void>() {
+                    @Override
+                    protected void onPreExecute() {
+                        mainProgressBar.setVisibility(View.VISIBLE);
+                        super.onPreExecute();
+                    }
+
                     protected Void doInBackground(Void... unused) {
                         itemManager.updateAllPrices();
                         return null;
                     }
                     protected void onPostExecute(Void unused) {
+                        mainProgressBar.setVisibility(View.GONE);
                         refreshList();
                         itemsListAdapter.notifyDataSetChanged();
                     }
@@ -88,13 +98,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 1:
-                if (resultCode == Activity.RESULT_OK) {
-                    refreshList();
-                    itemsListAdapter.notifyDataSetChanged();
-                }
-                break;
+        if (resultCode == Activity.RESULT_OK) {
+            refreshList();
+            itemsListAdapter.notifyDataSetChanged();
         }
     }
 
@@ -150,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
                 "text/plain".equals(type)) {
             String url = getIntent().getStringExtra(Intent.EXTRA_TEXT);
             Intent intent = new Intent(this, ItemFormActivity.class);
-            intent.putExtra("isNewItem", true);
             intent.putExtra("url", url);
             startActivityForResult(intent, 2);
         }
@@ -178,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         itemsListAdapter = new ItemsListAdapter(this,
                 itemManager.getItems());
 
-        itemListView = findViewById(R.id.itemListView);
+        ListView itemListView = findViewById(R.id.itemListView);
         itemListView.setAdapter(itemsListAdapter);
 
         registerForContextMenu(itemListView);
