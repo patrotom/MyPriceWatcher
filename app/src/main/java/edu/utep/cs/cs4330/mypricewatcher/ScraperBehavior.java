@@ -64,10 +64,16 @@ public class ScraperBehavior implements PriceFindBehavior {
 
     private Double getHomeDepotPrice(Document doc) {
         Elements priceElements = doc.getElementById("ajaxPrice").getAllElements();
-        Double dollars = Double.valueOf(priceElements.get(2).text());
-        Double cents = Double.valueOf(priceElements.get(3).text()) / 100.00;
+        double price;
+        if (priceElements.size() > 1) {
+            double dollars = Double.valueOf(priceElements.get(2).text());
+            double cents = Double.valueOf(priceElements.get(3).text()) / 100.00;
+            price = dollars + cents;
+        }
+        else
+            price = Double.valueOf(priceElements.first().text().replace("$", ""));
 
-        return dollars + cents;
+        return price;
     }
 
     private String urlToHtmlString(URL url) {
