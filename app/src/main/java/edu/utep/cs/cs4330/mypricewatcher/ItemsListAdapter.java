@@ -20,7 +20,7 @@ import java.util.List;
  * Represents custom list view adapter, which is used to display the added items.
  *
  * @author Tomas Patro
- * @version 0.3
+ * @version 0.4
  * @see MainActivity
  */
 public class ItemsListAdapter extends ArrayAdapter<Item> {

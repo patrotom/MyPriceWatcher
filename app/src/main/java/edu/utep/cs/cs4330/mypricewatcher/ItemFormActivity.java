@@ -3,23 +3,28 @@ package edu.utep.cs.cs4330.mypricewatcher;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Pair;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Represents activity which handles getting the information to create new item or edit the
  * existing one.
  *
  * @author Tomas Patro
- * @version 0.3
+ * @version 0.4
  * @see MainActivity
  */
 public class ItemFormActivity extends AppCompatActivity {
     private EditText nameEditText;
     private EditText urlEditText;
-    private TextView editItemHeading;
     private ItemManager itemManager;
     private int id;
 
@@ -37,15 +42,18 @@ public class ItemFormActivity extends AppCompatActivity {
 
         nameEditText = findViewById(R.id.nameEditText);
         urlEditText = findViewById(R.id.urlEditText);
-        editItemHeading = findViewById(R.id.editItemHeading);
+        TextView editItemHeading = findViewById(R.id.editItemHeading);
 
         Intent intent = getIntent();
 
         id = intent.getIntExtra("id", -1);
-        itemManager = new ItemManager(new SimulatedBehavior(), this);
+        String url = intent.getStringExtra("url");
+        itemManager = new ItemManager(new ScraperBehavior(), this);
 
         if (id == -1) {
             editItemHeading.setText("Add Item");
+            if (url != null)
+                urlEditText.setText(url);
         }
         else {
             Item item = itemManager.getItem(id);
@@ -55,25 +63,49 @@ public class ItemFormActivity extends AppCompatActivity {
     }
 
     /**
-     * Handles the click event from the submit button and returns input data back to the previous
-     * activity.
+     * Handles the click event from the submit button and persists a new item or shows appropriate
+     * error message.
      *
      * @param view current view
      */
     public void submitClicked(View view) {
-        Intent returnIntent = new Intent();
         String name = String.valueOf(nameEditText.getText());
         String url = String.valueOf(urlEditText.getText());
 
-        if (id == -1) {
-            id = itemManager.addItem(name, url);
-        }
-        else {
-            Item item = itemManager.getItem(id);
-            itemManager.updateItem(item, name, url);
+        Pair<Integer,String> validationResult = Item.validate(name, url);
+
+        if (validationResult.first != 0) {
+            makeToast(validationResult.second);
+            return;
         }
 
-        setResult(Activity.RESULT_OK, returnIntent);
-        finish();
+        ProgressBar itemProgressBar = findViewById(R.id.itemProgressBar);
+        Button submitButton = findViewById(R.id.submitButton);
+        new AsyncTask<Integer, Void, Integer>() {
+            protected void onPreExecute() {
+                itemProgressBar.setVisibility(View.VISIBLE);
+                submitButton.setEnabled(false);
+            }
+            protected Integer doInBackground(Integer... params) {
+                if (params[0] == -1)
+                    id = itemManager.addItem(name, url);
+                else {
+                    Item item = itemManager.getItem(params[0]);
+                    id = itemManager.updateItem(item, name, url);
+                }
+                return id;
+            }
+            protected void onPostExecute(Integer id) {
+                itemProgressBar.setVisibility(View.GONE);
+                submitButton.setEnabled(true);
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            }
+        }.execute(id);
+    }
+
+    private void makeToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 }

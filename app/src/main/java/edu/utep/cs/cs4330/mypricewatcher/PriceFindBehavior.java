@@ -6,7 +6,7 @@ package edu.utep.cs.cs4330.mypricewatcher;
  * product.
  *
  * @author Tomas Patro
- * @version 0.3
+ * @version 0.4
  * @see SimulatedBehavior
  * @see ScraperBehavior
  */

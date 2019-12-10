@@ -1,9 +1,11 @@
 package edu.utep.cs.cs4330.mypricewatcher;
 
-import android.util.Log;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
@@ -19,7 +21,8 @@ import java.net.URLConnection;
  */
 public class ScraperBehavior implements PriceFindBehavior {
     /**
-     * Do not use this method yet since it is not implemented yet.
+     * Finds the price of the item using its URL. It scrapes the price from the web page of the
+     * given item.
      *
      * @param item represents the item for which we want to find the current price
      * @return current price of the item. In the current version, only {@code null} value.
@@ -28,39 +31,67 @@ public class ScraperBehavior implements PriceFindBehavior {
     @Override
     public Double findPrice(Item item) {
         try {
-            String url = getUrlContent(item.getUrl());
-            // TODO
-            return 0.0;
+            URL url = new URL(item.getUrl());
+            String html = urlToHtmlString(url);
+
+            if (html == null)
+                return -1.0;
+
+            Document doc = Jsoup.parse(html);
+
+            switch (url.getHost().replace("www.", "")) {
+                case "bestbuy.com":
+                    return getBestBuyPrice(doc);
+                case "homedepot.com":
+                    return getHomeDepotPrice(doc);
+                default:
+                    return -1.0;
+            }
         } catch (Exception e) {
-            Log.w("SC", e.getMessage());
-            return null;
+            e.printStackTrace();
+            return -1.0;
         }
     }
 
-    public String getUrlContent(String urlStr) {
+    private Double getBestBuyPrice(Document doc) {
+        return Double.valueOf(doc.
+                getElementsByClass("priceView-hero-price priceView-customer-price").
+                first().getElementsByTag("span").first().text().
+                replace("$", ""));
+    }
+
+    private Double getHomeDepotPrice(Document doc) {
+        Elements priceElements = doc.getElementById("ajaxPrice").getAllElements();
+        double price;
+        if (priceElements.size() > 1) {
+            double dollars = Double.valueOf(priceElements.get(2).text());
+            double cents = Double.valueOf(priceElements.get(3).text()) / 100.00;
+            price = dollars + cents;
+        }
+        else
+            price = Double.valueOf(priceElements.first().text().replace("$", ""));
+
+        return price;
+    }
+
+    private String urlToHtmlString(URL url) {
         try {
-            URL url = new URL(urlStr);
-            URLConnection con = null;
-            con = url.openConnection();
-            String encoding = con.getContentEncoding();
-            if (encoding == null) {
-                encoding = "ISO-8859-1";
+            URLConnection connection = url.openConnection();
+            connection.setConnectTimeout(5000);
+            connection.setReadTimeout(5000);
+            connection.connect();
+
+            InputStream in = connection.getInputStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            StringBuilder html = new StringBuilder();
+            for (String line; (line = reader.readLine()) != null; ) {
+                html.append(line);
             }
-            BufferedReader r = new BufferedReader(new InputStreamReader(con.getInputStream(),
-                    encoding));
-            StringBuilder sb = new StringBuilder();
-            try {
-                String s;
-                while ((s = r.readLine()) != null) {
-                    sb.append(s);
-                    sb.append("\n");
-                }
-            } finally {
-                r.close();
-            }
-            return sb.toString();
-        } catch (IOException ex) {
-            return "";
+            in.close();
+            return html.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

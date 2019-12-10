@@ -1,10 +1,15 @@
 package edu.utep.cs.cs4330.mypricewatcher;
 
+import android.util.Pair;
+
+import java.net.URL;
+import java.util.ArrayList;
+
 /**
  * Represents the item which is the direct representation of the product with its price.
  *
  * @author Tomas Patro
- * @version 0.3
+ * @version 0.4
  */
 public class Item {
     private int id;
@@ -130,5 +135,36 @@ public class Item {
      */
     public void setCurrentPrice(Double currentPrice) {
         this.currentPrice = currentPrice;
+    }
+
+    /**
+     * Validates attributes of new potential {@code Item} object.
+     *
+     * @param name name attribute to be validated
+     * @param url url attribute to be validated
+     * @return pair where first is success/error code and second is empty string / error message
+     */
+    public static Pair<Integer,String> validate(String name, String url) {
+
+        if (name.equals(""))
+            return new Pair<>(1, "Name can not be empty!");
+
+        ArrayList<String> supportedStores = new ArrayList<String>() {
+            {
+                add("bestbuy.com");
+                add("homedepot.com");
+            }
+        };
+
+        try {
+            URL u = new URL(url);
+            if (!supportedStores.contains(u.getHost().replace("www.", "")))
+                return new Pair<>(3, "Unsupported store!");
+        }
+        catch (Exception e) {
+            return new Pair<>(2, "Invalid URL!");
+        }
+
+        return new Pair<>(0, "");
     }
 }
